@@ -1,0 +1,35 @@
+.pdf-quiz {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.25rem;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.file-label input { display: block; margin-top: 0.5rem; }
+.controls { margin-top: 1rem; display: flex; gap: 0.5rem; }
+.loading { color: #0b5; }
+.quiz-list { margin-top: 1rem; }
+.question { font-weight: 600; margin-bottom: 0.25rem; }
+.options { list-style: none; margin: 0; padding: 0 0 0 0.75rem; }
+.options li { margin: 0.25rem 0; }
+
+/* Remove numbering and add spacing between list items inside this component */
+.quiz-list ol,
+.bold-lines ol,
+.styles-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.quiz-list ol > li,
+.bold-lines ol > li,
+.styles-list ul > li {
+  margin-bottom: 0.6rem;
+}
+
+/* Slight indent for options while keeping spacing */
+.options li { margin-bottom: 0.5rem; }
+
+.options li.correct { background: rgba(40, 167, 69, 0.06); border-left: 3px solid #28a745; padding-left: 0.5rem; }

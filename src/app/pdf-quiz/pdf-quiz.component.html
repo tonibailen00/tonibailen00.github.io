@@ -1,0 +1,54 @@
+<section class="pdf-quiz">
+  <h2>Crear cuestionario desde PDF</h2>
+
+  <label class="file-label">
+    Subir PDF
+    <input type="file" accept="application/pdf" (change)="onFileChange($event)" />
+  </label>
+
+  <div *ngIf="loading()" class="loading">Procesando…</div>
+
+  <div class="controls">
+    <button (click)="visualize()" [disabled]="!file || loading()">Visualizar</button>
+    <button (click)="showStyles()" [disabled]="!file || loading()">Ver estilos</button>
+  </div>
+
+  <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
+
+  <section *ngIf="questions().length && showQuestionsFlag()" class="quiz-list">
+    <h3>Cuestionario</h3>
+    <ol>
+      <li *ngFor="let q of questions()">
+        <div class="question">{{ q.id }}. {{ q.question }}</div>
+        <ul class="options">
+          <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
+            <span *ngIf="opt.correct"><strong>{{ opt.text }}</strong></span>
+            <span *ngIf="!opt.correct">{{ opt.text }}</span>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+
+  <section *ngIf="boldLines().length" class="bold-lines">
+    <h3>Texto extraído (con estilo)</h3>
+    <ol>
+      <li *ngFor="let item of boldLines()">
+        <span [style.font-family]="item.family || 'inherit'" [style.font-weight]="fontWeightFor(item)">
+          {{ item.text }}
+        </span>
+        <!-- <small style="opacity:0.6; margin-left:0.5rem">(font:{{item.fontName}} page:{{item.page}})</small> -->
+      </li>
+    </ol>
+  </section>
+
+  <section *ngIf="stylesList().length" class="styles-list">
+    <h3>Estilos detectados</h3>
+    <ul>
+      <li *ngFor="let s of stylesList()">
+        <strong>{{ s.key }}</strong>
+        <pre style="white-space:pre-wrap">{{ s.value | json }}</pre>
+      </li>
+    </ul>
+  </section>
+</section>
