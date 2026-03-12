@@ -1,6 +1,16 @@
 <section class="pdf-quiz">
-  <h2>Crear cuestionario desde PDF</h2>
-
+  <div class="header-main">
+    <h2>Crear cuestionario</h2>
+    <div class="actions-main">
+      <label class="btn-import">
+        Cargar JSON
+        <input type="file" accept="application/json,.json" (change)="importFromJson($event)" style="display:none;" />
+      </label>
+      <button class="btn-export" (click)="exportToJson()" *ngIf="questions().length && showQuestionsFlag()">
+        Descargar JSON
+      </button>
+    </div>
+  </div>
   <label class="file-label">
     Subir PDF
     <input type="file" accept="application/pdf" (change)="onFileChange($event)" />
@@ -8,47 +18,130 @@
 
   <div *ngIf="loading()" class="loading">Procesando…</div>
 
+  <div class="parse-options">
+    <h4>¿Cómo está marcada la respuesta correcta en el PDF?</h4>
+    <label>
+      <input type="radio" name="parseMode" value="bold" [(ngModel)]="parseMode">
+      En negrita (ej: <strong>a) Opción correcta</strong>)
+    </label>
+    <label>
+      <input type="radio" name="parseMode" value="explicit" [(ngModel)]="parseMode">
+      Debajo de la pregunta (ej: "Respuesta: a)")
+    </label>
+    <label>
+      <input type="radio" name="parseMode" value="highlight" [(ngModel)]="parseMode">
+      <mark class="highlight-option">Subrayada en amarillo</mark>
+    </label>
+  </div>
+
   <div class="controls">
-    <button (click)="visualize()" [disabled]="!file || loading()">Visualizar</button>
-    <button (click)="showStyles()" [disabled]="!file || loading()">Ver estilos</button>
+    <button (click)="visualize()" [disabled]="!file || loading()">Generar preguntas</button>
   </div>
 
   <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
 
-  <section *ngIf="questions().length && showQuestionsFlag()" class="quiz-list">
-    <h3>Cuestionario</h3>
+  <!-- Question List / Editor Mode -->
+  <section *ngIf="questions().length && showQuestionsFlag() && !isExamActive()" class="quiz-list">
+    <div class="quiz-header">
+      <h3>Cuestionario ({{ questions().length }} preguntas)</h3>
+      <div class="quiz-header-actions">
+        <button class="btn-exam" (click)="startExam()">📝 Hacer examen</button>
+        <button class="btn-create" (click)="addNewQuestion()">+ Nueva Pregunta</button>
+      </div>
+    </div>
     <ol>
-      <li *ngFor="let q of questions()">
-        <div class="question">{{ q.id }}. {{ q.question }}</div>
-        <ul class="options">
-          <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
-            <span *ngIf="opt.correct"><strong>{{ opt.text }}</strong></span>
-            <span *ngIf="!opt.correct">{{ opt.text }}</span>
-          </li>
-        </ul>
+      <li *ngFor="let q of questions()" class="question-card">
+
+        <!-- View Mode -->
+        <ng-container *ngIf="!q.isEditing">
+          <div class="question-header">
+            <div class="question">{{ q.id }}. {{ q.question }}</div>
+            <div class="question-actions">
+              <button class="icon-btn edit-btn" (click)="editQuestion(q)" title="Editar">✏️</button>
+              <button class="icon-btn delete-btn" (click)="deleteQuestion(q)" title="Eliminar">🗑️</button>
+            </div>
+          </div>
+          <ul class="options">
+            <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
+              <span *ngIf="opt.correct"><strong>✔ {{ opt.text }}</strong></span>
+              <span *ngIf="!opt.correct">{{ opt.text }}</span>
+            </li>
+          </ul>
+        </ng-container>
+
+        <!-- Edit Mode -->
+        <ng-container *ngIf="q.isEditing">
+          <div class="edit-mode">
+            <div class="form-group row">
+              <input type="number" [(ngModel)]="q.id" class="id-input" placeholder="Nº">
+              <textarea [(ngModel)]="q.question" class="question-input" rows="2"
+                placeholder="Escribe la pregunta..."></textarea>
+            </div>
+
+            <div class="options-edit">
+              <h4>Opciones:</h4>
+              <div *ngFor="let opt of q.options; let i = index" class="option-edit-row">
+                <input type="checkbox" [(ngModel)]="opt.correct" title="¿Opción correcta?">
+                <input type="text" [(ngModel)]="opt.text" class="option-input" placeholder="Texto de la opción">
+                <button class="icon-btn delete-btn" (click)="removeOption(q, i)" title="Quitar opción">❌</button>
+              </div>
+              <button class="btn-small mt-2" (click)="addOption(q)">+ Añadir Opción</button>
+            </div>
+
+            <div class="edit-actions">
+              <button class="save-btn" (click)="saveQuestion(q)">💾 Guardar Cambios</button>
+              <button class="delete-btn" (click)="deleteQuestion(q)">🗑️ Eliminar Pregunta</button>
+            </div>
+          </div>
+        </ng-container>
+
       </li>
     </ol>
   </section>
 
-  <section *ngIf="boldLines().length" class="bold-lines">
-    <h3>Texto extraído (con estilo)</h3>
-    <ol>
-      <li *ngFor="let item of boldLines()">
-        <span [style.font-family]="item.family || 'inherit'" [style.font-weight]="fontWeightFor(item)">
-          {{ item.text }}
-        </span>
-        <!-- <small style="opacity:0.6; margin-left:0.5rem">(font:{{item.fontName}} page:{{item.page}})</small> -->
-      </li>
-    </ol>
-  </section>
+  <!-- Exam Mode View -->
+  <section *ngIf="isExamActive()" class="exam-container">
+    <div class="exam-header">
+      <div class="exam-info">
+        <h3>Modo Examen</h3>
+        <p *ngIf="!examFinished()">Contesta a las preguntas y pulsa finalizar para ver tu nota.</p>
+        <div *ngIf="examFinished() && score()" class="score-card">
+          <h4>Resultado: {{ score()?.correct }} / {{ score()?.total }}</h4>
+          <p>Porcentaje: {{ (score()!.correct / score()!.total * 100).toFixed(1) }}%</p>
+        </div>
+      </div>
+      <div class="exam-actions">
+        <button *ngIf="!examFinished()" class="btn-finish" (click)="finishExam()">🏁 Finalizar examen</button>
+        <button class="btn-back" (click)="resetExam()">⬅ Volver a edición</button>
+      </div>
+    </div>
 
-  <section *ngIf="stylesList().length" class="styles-list">
-    <h3>Estilos detectados</h3>
-    <ul>
-      <li *ngFor="let s of stylesList()">
-        <strong>{{ s.key }}</strong>
-        <pre style="white-space:pre-wrap">{{ s.value | json }}</pre>
-      </li>
-    </ul>
+    <div class="exam-questions">
+      <div *ngFor="let q of questions(); let qIdx = index" class="exam-card" [class.result-mode]="examFinished()">
+        <div class="question-text">{{ qIdx + 1 }}. {{ q.question }}</div>
+        
+        <div class="exam-options">
+          <div *ngFor="let opt of q.options; let oIdx = index" 
+               class="exam-option"
+               [class.selected]="userAnswers()[q.id] === oIdx"
+               [class.correct-highlight]="examFinished() && opt.correct"
+               [class.incorrect-highlight]="examFinished() && userAnswers()[q.id] === oIdx && !opt.correct"
+               (click)="selectOption(q.id, oIdx)">
+            
+            <span class="option-marker">{{ opt.text.substring(0, 2) }}</span>
+            <span class="option-content">{{ opt.text.substring(3) }}</span>
+
+            <div *ngIf="examFinished()" class="feedback-icon">
+              <span *ngIf="opt.correct">✅</span>
+              <span *ngIf="userAnswers()[q.id] === oIdx && !opt.correct">❌</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exam-footer" *ngIf="!examFinished()">
+      <button class="btn-finish large" (click)="finishExam()">🏁 Finalizar examen y ver nota</button>
+    </div>
   </section>
 </section>
