@@ -426,6 +426,24 @@ h2 {
 
   .exam-info h3 { margin: 0; color: var(--primary-color); }
   .exam-info p { margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+  /* Mobile Stack */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    position: relative;
+    top: 0;
+
+    .exam-actions {
+      width: 100%;
+      flex-direction: column;
+      
+      button {
+        width: 100%;
+      }
+    }
+  }
 }
 
 .score-card {
