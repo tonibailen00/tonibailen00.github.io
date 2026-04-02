@@ -1,4 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* =========================================================================    
+   MIXINS GLOBAL (Apple Glass)
+   ========================================================================= */ 
+@mixin apple-glass($theme: 'light') {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  
+  @if $theme == 'light' {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  } @else if $theme == 'dark' {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: white;
+  }
+}
+
+@mixin apple-glass-button($theme: 'light') {
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+
+  @if $theme == 'light' {
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--text-main);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    &:hover { background: rgba(255, 255, 255, 0.9); transform: translateY(-1px); }
+  } @else if $theme == 'dark' {
+    background: rgba(29, 29, 31, 0.8);
+    backdrop-filter: blur(8px);
+    color: white;
+    &:hover { background: rgba(0, 0, 0, 0.9); transform: translateY(-1px); }
+  } @else if $theme == 'success' {
+    background: rgba(52, 199, 89, 0.85); /* Apple Green */
+    color: white;
+    &:hover { background: rgba(52, 199, 89, 1); transform: translateY(-1px); }
+  } @else if $theme == 'danger' {
+    background: rgba(255, 59, 48, 0.85); /* Apple Red */
+    color: white;
+    &:hover { background: rgba(255, 59, 48, 1); transform: translateY(-1px); }
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
 :root {
   /* Apple Glassmorphism Variables */
   --primary-color: #007aff;
@@ -545,3 +602,86 @@ button {
   @include apple-glass-button('success');
   flex: 1;
 }
+/* --- Moved from pdf-quiz for exams --- */
+.score-card {
+    margin-top: 0.5rem;
+
+    h4 {
+        margin: 0;
+        color: var(--success-color);
+        font-size: 1.2rem;
+    }
+
+    p {
+        margin: 0;
+        font-weight: 600;
+    }
+}
+
+.exam-card, .exam-active-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+    .question-text {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--text-main);
+    }
+
+    .exam-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .exam-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        border: 2px solid #f3f4f6;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: var(--text-main);
+
+        .option-marker {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        &:hover:not(.selected) {
+            background: #f9fafb;
+            border-color: #e5e7eb;
+        }
+
+        &.selected {
+            background: rgba(79, 70, 229, 0.05);
+            border-color: var(--primary-color);
+        }
+
+        /* Result feedback */
+        &.correct-highlight {
+            background: rgba(16, 185, 129, 0.1) !important;
+            border-color: var(--success-color) !important;
+            color: var(--success-color);
+        }
+
+        &.incorrect-highlight {
+            background: rgba(239, 68, 68, 0.05) !important;
+            border-color: var(--danger-color) !important;
+            color: var(--danger-color);
+        }
+
+        .feedback-icon {
+            margin-left: auto;
+            font-size: 1.25rem;
+        }
+    }
+}
+

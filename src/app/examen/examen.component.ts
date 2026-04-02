@@ -10,7 +10,7 @@ import { NavigationService } from '../services/navigation.service';
     standalone: true,
     imports: [CommonModule],
     templateUrl: './examen.component.html',
-    styleUrls: ['../pdf-quiz/pdf-quiz.component.scss', './examen.component.scss', '../../styles.scss']
+    styleUrls: ['./examen.component.scss', '../../styles.scss']
 })
 export class ExamenComponent implements OnInit, OnDestroy {
     private route = inject(ActivatedRoute);

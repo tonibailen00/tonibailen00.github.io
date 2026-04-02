@@ -1,6 +1,4 @@
-﻿@use "../../styles.scss" as *;
-
-.actions-main {
+﻿.actions-main {
     display: flex;
     gap: 0.5rem;
 }
@@ -70,11 +68,6 @@
     margin-top: 1.5rem;
     display: flex;
     gap: 1rem;
-
-    button {
-        @include apple-glass-button('dark');
-        flex: 1;
-    }
 }
 
 .quiz-list {
@@ -87,16 +80,7 @@
     list-style: none;
 }
 
-.question-card {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    @include apple-glass('light');
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-    &:hover {
-        transform: translateY(-2px) scale(1.01);
-    }
-}
 
 .question-card .question {
     font-size: 1.1rem;
@@ -137,9 +121,7 @@
     }
 }
 
-.btn-create {
-    @include apple-glass-button('dark');
-}
+
 
 /* Question header with actions */
 .question-header {
@@ -219,14 +201,7 @@
     font-size: 0.95rem;
 }
 
-.btn-small {
-    @include apple-glass-button('light');
-    padding: 0.4rem 0.85rem;
-    font-size: 0.85rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-}
+
 
 .mt-2 {
     margin-top: 0.75rem;
@@ -241,15 +216,9 @@
     border-top: 1px solid var(--border-color);
 }
 
-.save-btn {
-    @include apple-glass-button('success');
-    padding: 0.6rem 1.25rem;
-}
 
-.edit-actions .delete-btn {
-    @include apple-glass-button('danger');
-    padding: 0.6rem 1.25rem;
-}
+
+
 
 /* Exam Mode Specific Styles */
 .quiz-header-actions {
@@ -257,10 +226,7 @@
     gap: 1rem;
 }
 
-.btn-exam {
-    @include apple-glass-button('success');
-    padding: 0.5rem 1.25rem;
-}
+
 
 .exam-container {
     margin-top: 2rem;
@@ -323,102 +289,12 @@
     }
 }
 
-.score-card {
-    margin-top: 0.5rem;
-
-    h4 {
-        margin: 0;
-        color: var(--success-color);
-        font-size: 1.2rem;
-    }
-
-    p {
-        margin: 0;
-        font-weight: 600;
-    }
-}
-
 .exam-actions {
     display: flex;
     gap: 0.75rem;
 }
 
-.btn-finish {
-    @include apple-glass-button('dark');
 
-    &.large {
-        width: 100%;
-        margin-top: 1rem;
-        @include apple-glass-button('light');
-    }
-}
-
-.exam-card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-
-    .question-text {
-        font-size: 1.15rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        color: var(--text-main);
-    }
-
-    .exam-options {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .exam-option {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1rem;
-        border: 2px solid #f3f4f6;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: var(--text-main);
-
-        .option-marker {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        &:hover:not(.selected) {
-            background: #f9fafb;
-            border-color: #e5e7eb;
-        }
-
-        &.selected {
-            background: rgba(79, 70, 229, 0.05);
-            border-color: var(--primary-color);
-        }
-
-        /* Result feedback */
-        &.correct-highlight {
-            background: rgba(16, 185, 129, 0.1) !important;
-            border-color: var(--success-color) !important;
-            color: var(--success-color);
-        }
-
-        &.incorrect-highlight {
-            background: rgba(239, 68, 68, 0.05) !important;
-            border-color: var(--danger-color) !important;
-            color: var(--danger-color);
-        }
-
-        .feedback-icon {
-            margin-left: auto;
-            font-size: 1.25rem;
-        }
-    }
-}
 
 .btn-small {
     background: rgba(255, 255, 255, 0.3);
@@ -468,56 +344,17 @@
     }
 }
 
-.btn-select {
-    @include apple-glass-button('light');
-    padding: 0.4rem 0.8rem;
-}
 
-.modal-question-item {
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    @include apple-glass('light');
-    background: rgba(255, 255, 255, 0.4) !important;
-    border-radius: 16px;
-    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 5px rgba(0, 0, 0, 0.05);
 
-    &.selectable.selected {
-        background: rgba(16, 185, 129, 0.15) !important;
-        border-color: rgba(16, 185, 129, 0.4);
-        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 4px 10px rgba(16, 185, 129, 0.1);
-    }
 
-    &:hover {
-        transform: translateY(-1px);
-    }
 
-    .q-text {
-        font-weight: 500;
-        line-height: 1.4;
-        color: var(--text-main);
-    }
-}
 
-.btn-import-bulk {
-    @include apple-glass-button('success');
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-}
 
 .icon-header {
     font-size: 1.2rem;
 }
 
-.btn-import {
-    @include apple-glass-button('light');
-    padding: 0.5rem 1rem;
-    margin-right: 0.5rem;
-}
+
 
 // Closed .btn-import here
 
