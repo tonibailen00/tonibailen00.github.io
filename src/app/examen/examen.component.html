@@ -17,11 +17,15 @@
 
     <div class="card-grid">
       <div *ngFor="let q of quizzes()" class="grid-card link-card" (click)="startExam(q.id)">
-        <div class="quiz-info">
-          <h3>{{ q.title }}</h3>
-          <p class="subtitle">{{ q.questions.length }} preguntas • {{ q.date | date:'dd/MM/yyyy' }}</p>
+        <div class="card-header-row align-center">
+          <div class="quiz-info">
+            <h3>{{ q.title }}</h3>
+            <p class="subtitle">{{ q.questions.length }} preguntas • {{ q.date | date:'dd/MM/yyyy' }}</p>
+          </div>
+          <div class="card-actions" style="pointer-events: none;">
+            <button class="icon-btn"><i class="ph-bold ph-play" style="font-size: 1.4rem;"></i></button>
+          </div>
         </div>
-        <div class="icon-play"><i class="ph-fill ph-play-circle" style="color: var(--primary-color);"></i></div>
       </div>
     </div>
   </div>
@@ -29,7 +33,7 @@
   <ng-container *ngIf="quiz() as qz">
     <div class="exam-view-container">
       <div class="exam-header-nav">
-        <button class="btn-back-icon" (click)="requestExit()">⬅</button>
+        <button class="btn-back-icon" (click)="requestExit()"><i class="ph-bold ph-arrow-left"></i></button>
         <h2 class="truncate">{{ qz.title }}</h2>
         <span class="progress-text">{{ currentQuestionIndex() + 1 }} / {{ qz.questions.length }}</span>
       </div>

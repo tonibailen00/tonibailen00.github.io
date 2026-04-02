@@ -50,32 +50,3 @@
   color: #b91c1c;
   font-weight: 500;
 }
-
-.btn-delete-icon {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #ef4444;
-  font-size: 1.25rem;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  padding: 0.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.btn-delete-icon:hover {
-  opacity: 1;
-  background: rgba(239, 68, 68, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}

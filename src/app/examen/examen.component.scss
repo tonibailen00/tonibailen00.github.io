@@ -7,8 +7,11 @@
   transform: scale(0.98);
 }
 
-.icon-play {
-  font-size: 1.5rem;
+.link-card:hover .icon-btn {
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  color: var(--primary-color);
 }
 
 /* Paginación del Examen Visual */
@@ -39,17 +42,27 @@
 }
 
 .btn-back-icon {
-  background: #f3f4f6;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.4); /* More glassy */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  font-size: 1.4rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4b5563;
+  color: var(--primary-color);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.btn-back-icon:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .btn-back-icon:active {
@@ -69,68 +82,88 @@
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 0.5rem;
+  margin: -0.5rem -0.5rem 0 -0.5rem;
   scrollbar-width: thin;
 }
 
 .nav-dot {
   flex: 0 0 auto;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  border: 2px solid #e5e7eb;
-  background: #fff;
-  color: #4b5563;
+  min-width: 44px;
+  height: 44px;
+  box-sizing: border-box; /* fix for clipped text */
+  line-height: normal; /* fix for clipped text */
+  border-radius: 22px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15); /* Liquid Glass */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 10px rgba(31, 38, 135, 0.1);
+  color: var(--text-main);
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
-  padding: 0;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.nav-dot:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 6px 16px rgba(31, 38, 135, 0.12);
 }
 
 .nav-dot.answered {
-  background: #e0e7ff;
-  border-color: #818cf8;
-  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.15);
+  border-color: rgba(79, 70, 229, 0.3);
+  color: var(--primary-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 12px rgba(79, 70, 229, 0.1);
 }
 
 .nav-dot.active {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+  border-color: var(--primary-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 0 3px rgba(79, 70, 229, 0.2), 0 4px 12px rgba(79, 70, 229, 0.15);
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
 }
 
 .nav-dot.correct {
-  background: #d1fae5;
-  border-color: #10b981;
-  color: #047857;
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--success-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 10px rgba(16, 185, 129, 0.1);
 }
 
 .nav-dot.incorrect {
-  background: #fee2e2;
-  border-color: #ef4444;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--danger-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 10px rgba(239, 68, 68, 0.1);
 }
 
 .nav-dot.unanswered-wrong {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-  color: #374151;
-  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 .exam-active-card {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .question-text {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-main);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
@@ -146,30 +179,53 @@
 .btn-finish-exam {
   flex: 1;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 14px;
   font-weight: 600;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   font-size: 1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .btn-nav {
-  background: #f3f4f6;
-  color: #4b5563;
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--text-main);
+}
+
+.btn-nav:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 
 .btn-nav.primary {
-  background: #e0e7ff;
-  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.15);
+  border-color: rgba(79, 70, 229, 0.3);
+  color: var(--primary-color);
+}
+
+.btn-nav.primary:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 15px rgba(79, 70, 229, 0.2);
 }
 
 .btn-nav:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .btn-finish-exam {
-  background: #10b981;
+  background: rgba(16, 185, 129, 0.8);
+  border-color: rgba(16, 185, 129, 0.5);
   color: white;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.btn-finish-exam:hover {
+  background: rgba(16, 185, 129, 1);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 15px rgba(16, 185, 129, 0.3);
 }

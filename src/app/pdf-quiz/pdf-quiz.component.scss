@@ -3,51 +3,29 @@
     gap: 0.5rem;
 }
 
-.file-label {
-    display: inline-block;
-    padding: 1rem;
-    border: 2px dashed var(--primary-color);
-    border-radius: 8px;
-    background: rgba(79, 70, 229, 0.05);
-    cursor: pointer;
-    font-weight: 500;
-    color: var(--primary-color);
-    width: 100%;
-    text-align: center;
-    transition: all 0.2s;
-
-    &:hover {
-        background: rgba(79, 70, 229, 0.1);
-    }
-
-    input {
-        display: none;
-    }
-}
-
 .parse-options {
     margin-top: 1.5rem;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
+    background: rgba(255, 255, 255, 0.4); /* Liquid Glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 15px rgba(0, 0, 0, 0.05);
 
     h4 {
         margin: 0 0 1rem 0;
-        font-size: 1rem;
+        font-size: 1.05rem;
         color: var(--text-main);
     }
 
     label {
         display: flex;
         align-items: center;
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
         cursor: pointer;
         color: var(--text-main);
-        gap: 0.5rem;
+        gap: 0.75rem;
 
         &:last-child {
             margin-bottom: 0;
@@ -57,7 +35,7 @@
             background-color: rgba(252, 235, 70, 0.4);
             backdrop-filter: blur(2px);
             color: var(--text-main);
-            padding: 0.1rem 0.4rem;
+            padding: 0.1rem 0.5rem;
             border-radius: 6px;
             font-weight: 500;
         }
@@ -130,22 +108,6 @@
 .question-actions {
     display: flex;
     gap: 0.25rem;
-}
-
-.icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    opacity: 0.5;
-    transition: all 0.2s;
-    padding: 0.25rem;
-    border-radius: 4px;
-
-    &:hover {
-        opacity: 1;
-        background: var(--bg-color);
-    }
 }
 
 /* Edit mode styles */
@@ -284,33 +246,6 @@
     gap: 0.75rem;
 }
 
-.btn-small {
-    background: rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    padding: 0.4rem 0.8rem;
-    border-radius: 9999px;
-    color: var(--text-main);
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.85rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: all 0.2s;
-
-    &:hover {
-        background: rgba(255, 255, 255, 0.6);
-    }
-
-    background: none;
-    border: none;
-    color: #4f46e5;
-    cursor: pointer;
-    padding: 0;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
 .modal-list-item {
     padding: 0.75rem;
     border: 1px solid #e5e7eb;
@@ -334,70 +269,4 @@
 
 .icon-header {
     font-size: 1.2rem;
-}
-
-.fab-group {
-    position: fixed;
-    bottom: calc(120px + env(safe-area-inset-bottom));
-    /* Distancia segura por encima del Bottom Nav */
-    right: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.75rem;
-    z-index: 900;
-}
-
-.fab-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-    /* Apple Glass Effect */
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-
-    &:hover {
-        transform: translateY(-4px) scale(1.05);
-        background: rgba(255, 255, 255, 0.85);
-        /* Un poco más opaco al hover */
-        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-    }
-
-    &:active {
-        transform: translateY(2px) scale(0.95);
-    }
-}
-
-.fab-small {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    /* Circulo perfecto */
-    font-size: 1.4rem;
-}
-
-.fab-main {
-    height: 60px;
-    padding: 0 1.5rem;
-    border-radius: 30px;
-    /* Ovalo */
-    font-size: 1.3rem;
-    gap: 0.5rem;
-
-    /* Para que destace como acción principal (Gradiente sutil o Glass principal) */
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-
-    .text {
-        font-weight: 700;
-        font-size: 1rem;
-        color: var(--primary-color);
-    }
 }

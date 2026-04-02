@@ -25,16 +25,16 @@
   max-width: 450px;
   margin: 0 auto;
   height: 70px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.08); /* Más transparente */
+  backdrop-filter: blur(3px); /* Menos blur para hacerlo más 'liquid' */
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 35px;
   /* Forma de pastilla flotante */
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 15px 40px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   z-index: 1000;
   padding: 0 0.5rem;
 }

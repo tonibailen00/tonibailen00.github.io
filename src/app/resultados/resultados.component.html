@@ -14,10 +14,17 @@
   </div>
 
   <div class="card-grid" *ngIf="!loading() && results().length > 0">
-    <div *ngFor="let res of results()" class="grid-card" style="position: relative; display: block;">
-      <div class="result-header">
-        <h3>{{ res.quizTitle }}</h3>
-        <span class="date">{{ res.date | date:'short' }}</span>
+    <div *ngFor="let res of results()" class="grid-card">
+      <div class="card-header-row">
+        <div class="result-header">
+          <h3>{{ res.quizTitle }}</h3>
+          <span class="date">{{ res.date | date:'short' }}</span>
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn delete-btn" (click)="deleteResult(res.id)" aria-label="Eliminar resultado">
+            <i class="ph-bold ph-trash"></i>
+          </button>
+        </div>
       </div>
 
       <div class="score-row">
@@ -29,10 +36,6 @@
           <span class="incorrect"><i class="ph-fill ph-x-circle"></i> {{ res.incorrectAnswers }} incorrectas</span>
         </div>
       </div>
-
-      <button class="btn-delete-icon" (click)="deleteResult(res.id)" aria-label="Eliminar resultado">
-        <i class="ph-bold ph-trash"></i>
-      </button>
     </div>
   </div>
 </div>
