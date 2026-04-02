@@ -1,1 +1,0 @@
-import{h as a,r as o}from"./chunk-3TKXFSXW.js";var t=class e{isExamMode=o(!1);static \u0275fac=function(i){return new(i||e)};static \u0275prov=a({token:e,factory:e.\u0275fac,providedIn:"root"})};export{t as a};
