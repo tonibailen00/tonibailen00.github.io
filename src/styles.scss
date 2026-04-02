@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@use './app/glass-mixins.scss' as glass;
 
 /* =========================================================================    
    MIXINS GLOBAL (Apple Glass)
@@ -31,7 +32,6 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  backdrop-filter: blur(10px);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 40%), 0 4px 10px rgb(0 0 0 / 5%);
 
   @if $theme =='light' {
@@ -116,8 +116,8 @@
   --glass-border-light: rgb(255 255 255 / 20%);
 
   --glass-shadow: 0 8px 32px 0 rgb(31 38 135 / 7%);
-  --glass-shadow-heavy: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 90%);
-  --glass-shadow-light: 0 4px 10px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 70%);
+  --glass-shadow-heavy: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 90%), inset 0 -1px 0 rgb(0 0 0 / 5%);
+  --glass-shadow-light: 0 4px 10px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 70%), inset 0 -1px 0 rgb(0 0 0 / 5%);
 
   --glass-blur-sm: blur(4px);
   --glass-blur-md: blur(10px);
@@ -130,17 +130,11 @@
 
 /* Utils for liquid glass */
 .glass-panel {
-  background: linear-gradient(135deg, rgb(255 255 255 / 40%) 0%, rgb(255 255 255 / 10%) 100%);
-  backdrop-filter: var(--glass-blur-md);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow-heavy);
+  @include glass.liquid-glass-panel;
 }
 
 .glass-pill {
-  background: var(--glass-bg-transparent);
-  backdrop-filter: var(--glass-blur-sm);
-  border: 1px solid var(--glass-border-light);
-  box-shadow: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 60%);
+  @include glass.liquid-glass-pill;
 }
 
 * {
@@ -154,6 +148,7 @@ body {
   background: var(--bg-gradient);
   background-attachment: fixed;
   color: var(--text-main);
+  text-shadow: 0 1px 2px rgb(255 255 255 / 60%);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -177,7 +172,7 @@ button {
 
 /* Base style for forms and large card blocks */
 .content-card {
-  @extend .glass-panel;
+  @include glass.liquid-glass-panel;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   border-radius: 20px;
@@ -230,7 +225,7 @@ button {
   padding: 3rem 1rem;
   margin-top: 2rem;
   border-radius: 20px;
-  @extend .glass-panel;
+  @include glass.liquid-glass-panel;
 }
 
 .empty-state p {
@@ -242,7 +237,6 @@ button {
 .btn-primary {
   background: rgb(79 70 229 / 75%);
   /* Liquid glass primary tint */
-  backdrop-filter: blur(10px);
   color: white;
   padding: 0.75rem 1.5rem;
   border: 1px solid rgb(255 255 255 / 30%);
@@ -267,7 +261,6 @@ button {
   display: inline-block;
   background: rgb(255 255 255 / 35%);
   backdrop-filter: blur(10px);
-  color: var(--text-main);
   padding: 0.5rem 1rem;
   border-radius: 12px;
   font-weight: 600;
@@ -287,7 +280,6 @@ button {
   background: rgb(255 255 255 / 15%);
   border: 1px solid rgb(255 255 255 / 40%);
   backdrop-filter: blur(5px);
-  color: var(--text-main);
   cursor: pointer;
   font-size: 1.1rem;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -337,8 +329,6 @@ button {
   background: rgb(255 255 255 / 8%);
   /* Más transparente */
   backdrop-filter: blur(3px);
-  /* Menos blur */
-  border: 1px solid rgb(255 255 255 / 40%);
   box-shadow: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 70%);
 
   &:hover {
@@ -394,7 +384,7 @@ button {
 
 /* Cards used inside grids */
 .grid-card {
-  @extend .glass-panel;
+  @include glass.liquid-glass-panel;
   padding: 1.5rem;
   border-radius: 20px;
   /* Big apple radius */
@@ -471,7 +461,6 @@ button {
 .modal-content {
   background: rgb(255 255 255 / 45%);
   /* Liquid glass modal */
-  backdrop-filter: blur(16px);
   border: 1px solid rgb(255 255 255 / 60%);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 80%), 0 15px 40px rgb(0 0 0 / 10%);
   border-radius: 24px;
@@ -539,7 +528,6 @@ button {
 
 .btn-cancel {
   background: rgb(255 255 255 / 35%);
-  backdrop-filter: blur(10px);
 
   color: var(--text-main);
   border: 1px solid rgb(255 255 255 / 40%);
@@ -560,7 +548,6 @@ button {
   background: rgb(79 70 229 / 15%);
   /* Primary tinted liquid glass */
   backdrop-filter: blur(10px);
-
   color: var(--primary-color);
   border: 1px solid rgb(79 70 229 / 30%);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%), 0 4px 10px rgb(79 70 229 / 10%);
@@ -607,7 +594,6 @@ button {
   background: rgb(255 255 255 / 35%);
   /* Liquid glass */
   backdrop-filter: blur(10px);
-
   color: var(--text-main);
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: inset 0 2px 4px rgb(0 0 0 / 2%), 0 2px 5px rgb(31 38 135 / 5%);
@@ -633,7 +619,6 @@ input[type="radio"] {
   border: 2px solid rgb(0 0 0 / 30%);
   /* Más visible */
   backdrop-filter: blur(10px);
-
   border-radius: 6px;
   cursor: pointer;
   display: inline-flex;
@@ -677,7 +662,6 @@ input[type="radio"]:checked::after {
   border: 2px dashed rgb(79 70 229 / 40%);
   border-radius: 12px;
   background: rgb(255 255 255 / 40%);
-  backdrop-filter: blur(10px);
 
   cursor: pointer;
   font-weight: 600;
@@ -703,7 +687,6 @@ input[type="radio"]:checked::after {
 .controls button {
   background: rgb(79 70 229 / 75%);
   /* Liquid glass primary */
-  backdrop-filter: blur(10px);
 
   color: white;
   border: 1px solid rgb(255 255 255 / 30%);
