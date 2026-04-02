@@ -80,8 +80,6 @@
     list-style: none;
 }
 
-
-
 .question-card .question {
     font-size: 1.1rem;
     font-weight: 600;
@@ -120,8 +118,6 @@
         color: var(--text-main);
     }
 }
-
-
 
 /* Question header with actions */
 .question-header {
@@ -201,8 +197,6 @@
     font-size: 0.95rem;
 }
 
-
-
 .mt-2 {
     margin-top: 0.75rem;
 }
@@ -215,10 +209,6 @@
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
 }
-
-
-
-
 
 /* Exam Mode Specific Styles */
 .quiz-header-actions {
@@ -294,8 +284,6 @@
     gap: 0.75rem;
 }
 
-
-
 .btn-small {
     background: rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -344,21 +332,10 @@
     }
 }
 
-
-
-
-
-
-
 .icon-header {
     font-size: 1.2rem;
 }
 
-
-
-// Closed .btn-import here
-
-/* Floating Action Buttons (Liquid Glass) */
 .fab-group {
     position: fixed;
     bottom: calc(120px + env(safe-area-inset-bottom));
