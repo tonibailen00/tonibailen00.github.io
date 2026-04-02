@@ -1,1 +1,26 @@
-<router-outlet />
+<main class="app-container">
+  <!-- Content area for the selected route -->
+  <div class="content-router" [ngClass]="{'no-bottom-nav': ui.isExamMode()}">
+    <router-outlet />
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="bottom-nav" *ngIf="!ui.isExamMode()">
+    <a routerLink="/crear" routerLinkActive="active" class="nav-item">
+      <span class="icon">➕</span>
+      <span class="label">Crear</span>
+    </a>
+    <a routerLink="/cuestionarios" routerLinkActive="active" class="nav-item">
+      <span class="icon">📁</span>
+      <span class="label">Mis Test</span>
+    </a>
+    <a routerLink="/examen" routerLinkActive="active" class="nav-item">
+      <span class="icon">📝</span>
+      <span class="label">Examen</span>
+    </a>
+    <a routerLink="/resultados" routerLinkActive="active" class="nav-item">
+      <span class="icon">📊</span>
+      <span class="label">Resultados</span>
+    </a>
+  </nav>
+</main>

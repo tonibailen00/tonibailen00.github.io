@@ -1,0 +1,52 @@
+.result-header {
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+}
+.date {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.score-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: white;
+}
+.score-circle.pass { background: var(--success-color); }
+.score-circle.fail { background: var(--danger-color); }
+
+.score-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.95rem;
+}
+.correct { color: #047857; font-weight: 500; }
+.incorrect { color: #b91c1c; font-weight: 500; }
+
+.btn-delete-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+.btn-delete-icon:hover { opacity: 1; background: #fee2e2; }

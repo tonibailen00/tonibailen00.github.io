@@ -1,14 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
-  --success-color: #10b981;
-  --danger-color: #ef4444;
-  --bg-color: #f3f4f6;
-  --card-bg: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
+  /* Apple Glassmorphism Variables */
+  --primary-color: #007aff; /* Apple Blue */
+  --primary-hover: #0056b3;
+  --success-color: #34c759; /* Apple Green */
+  --danger-color: #ff3b30; /* Apple Red */
+  
+  /* Animated / Gradient Background */
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  
+  /* Glass Variables */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --glass-blur: blur(20px);
+  
+  --text-main: #1d1d1f;
+  --text-muted: #86868b;
+  --border-color: rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -18,8 +27,9 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -28,3 +38,357 @@ body {
 button {
   font-family: inherit;
 }
+
+/* =========================================================================
+   GLOBAL LAYOUT & REUSABLE UTILITIES
+   ========================================================================= */
+
+/* Main wrapper for all views */
+.page-container { 
+  width: 95%;
+  margin: 3rem auto; 
+  padding: 2rem; 
+  padding-bottom: 90px; /* Accounts for bottom nav on mobile */
+}
+
+/* Base style for forms and large card blocks */
+.content-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Common Header Component */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-header .header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.page-header .header-title h2 { 
+  color: var(--primary-color); 
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.page-header .header-title p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.page-header .header-actions-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Empty State & Loading */
+.loading { 
+  text-align: center; 
+  color: var(--text-muted); 
+  margin-top: 3rem; 
+}
+
+.empty-state { 
+  text-align: center; 
+  padding: 3rem 1rem; 
+  margin-top: 2rem;
+  background: var(--glass-bg); 
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px; 
+  box-shadow: var(--glass-shadow); 
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn-primary { 
+  background: var(--primary-color); 
+  color: white; 
+  padding: 0.75rem 1.5rem; 
+  border: none; 
+  border-radius: 12px; /* Apple uses softer rounded buttons */
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 6px rgba(0, 122, 255, 0.2); /* Soft colored shadow */
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 122, 255, 0.3);
+}
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-import, .btn-export {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #1d1d1f;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.2s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.btn-import:hover, .btn-export:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Button Variations */
+.btn-play { 
+  background: var(--success-color); 
+  color: white; 
+}
+.btn-play:hover { background: #059669; }
+
+.btn-edit {
+  background: #3b82f6;
+  color: white;
+}
+.btn-edit:hover { background: #2563eb; }
+
+.btn-export {
+  background: #fdf2f8; 
+  color: #9d174d; 
+  border: 1px solid #fbcfe8; 
+}
+.btn-export:hover { background: #fce7f3; }
+
+.btn-delete { 
+  background: var(--danger-color); 
+  color: white; 
+}
+.btn-delete:hover { background: #b91c1c; }
+
+/* Generic Icon Action Buttons */
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px; /* Apple squircle vibe */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: none;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.btn-icon:active {
+  transform: translateY(1px) scale(0.95);
+}
+
+/* Grids for lists (Mis Tests, Resultados, Seleccionar examen) */
+.card-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.25rem; 
+  margin-top: 1.5rem;
+}
+
+/* Cards used inside grids */
+.grid-card { 
+  background: var(--glass-bg); 
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  padding: 1.5rem; 
+  border-radius: 20px; /* Big apple radius */
+  box-shadow: var(--glass-shadow); 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  gap: 1rem; 
+  flex-wrap: wrap; 
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.grid-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.12);
+}
+.grid-card h3 { 
+  margin: 0 0 0.5rem 0; 
+  font-size: 1.1rem; 
+  color: var(--text-main);
+}
+.grid-card p, .grid-card .subtitle { 
+  margin: 0; 
+  color: var(--text-muted); 
+  font-size: 0.9rem; 
+}
+
+/* =========================================================================
+   MODALS
+   ========================================================================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  border-radius: 24px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.modal-small {
+  max-width: 400px;
+  height: auto;
+}
+
+.modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #111827;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: auto;
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal-instruction {
+  margin: 0 0 1rem 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.modal-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-footer {
+  gap: 0.75rem;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover { background: #e5e7eb; }
+
+.btn-confirm {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-confirm:hover:not(:disabled) { background: var(--primary-hover); }
+.btn-confirm:disabled { background: #9ca3af; cursor: not-allowed; }
+
+/* Internal inputs */
+.search-container {
+  margin-bottom: 1rem;
+}
+.search-container.no-margin {
+  margin-bottom: 0 !important;
+}
+.search-input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.search-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+

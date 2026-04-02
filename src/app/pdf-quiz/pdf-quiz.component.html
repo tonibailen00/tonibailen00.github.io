@@ -1,56 +1,62 @@
-<section class="pdf-quiz">
-  <div class="header-main">
-    <h2>Crear cuestionario</h2>
-    <div class="actions-main">
-      <label class="btn-import">
-        Cargar JSON
-        <input type="file" accept="application/json,.json" (change)="importFromJson($event)" style="display:none;" />
-      </label>
-      <button class="btn-export" (click)="exportToJson()" *ngIf="questions().length && showQuestionsFlag()">
-        Descargar JSON
-      </button>
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-title">
+      <h2>Crear / Editar Cuestionario</h2>
+      <p>Genera preguntas y analiza PDFs para tu test.</p>
     </div>
   </div>
-  <label class="file-label">
-    Subir PDF
-    <input type="file" accept="application/pdf" (change)="onFileChange($event)" />
-  </label>
 
-  <div *ngIf="loading()" class="loading">Procesando…</div>
+  <div class="content-card">
+    <label class="file-label">
+      Subir PDF (Opcional)
+      <input type="file" accept="application/pdf" (change)="onFileChange($event)" />
+    </label>
 
-  <div class="parse-options">
-    <h4>¿Cómo está marcada la respuesta correcta en el PDF?</h4>
-    <label>
-      <input type="radio" name="parseMode" value="bold" [(ngModel)]="parseMode">
-      En negrita (ej: <strong>a) Opción correcta</strong>)
-    </label>
-    <label>
-      <input type="radio" name="parseMode" value="explicit" [(ngModel)]="parseMode">
-      Debajo de la pregunta (ej: "Respuesta: a)")
-    </label>
-    <label>
-      <input type="radio" name="parseMode" value="highlight" [(ngModel)]="parseMode">
-      <mark class="highlight-option">Subrayada en amarillo</mark>
-    </label>
+    <div *ngIf="loading()" class="loading">Procesando…</div>
+
+    <div class="parse-options">
+      <h4>¿Cómo está marcada la respuesta correcta en el PDF?</h4>
+      <label>
+        <input type="radio" name="parseMode" value="bold" [(ngModel)]="parseMode">
+        En negrita (ej: <strong>a) Opción correcta</strong>)
+      </label>
+      <label>
+        <input type="radio" name="parseMode" value="explicit" [(ngModel)]="parseMode">
+        Debajo de la pregunta (ej: "Respuesta: a)")
+      </label>
+      <label>
+        <input type="radio" name="parseMode" value="highlight" [(ngModel)]="parseMode">
+        <mark class="highlight-option">Subrayada en amarillo</mark>
+      </label>
+    </div>
+
+    <div class="controls">
+      <button (click)="visualize()" [disabled]="!file || loading()">Generar preguntas</button>
+    </div>
+
+    <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
+
+    <!-- Empty state message -->
+    <div *ngIf="visualized() && questions().length === 0 && !loading()" class="empty-state">
+      <p>No se ha encontrado ninguna pregunta con el formato esperado en este PDF.</p>
+      <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el "Generar preguntas" interactuando con los distintos modos disponibles.</small>
+    </div>
   </div>
-
-  <div class="controls">
-    <button (click)="visualize()" [disabled]="!file || loading()">Generar preguntas</button>
-  </div>
-
-  <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
 
   <!-- Question List / Editor Mode -->
-  <section *ngIf="questions().length && showQuestionsFlag() && !isExamActive()" class="quiz-list">
+  <div class="content-card quiz-list">
     <div class="quiz-header">
-      <h3>Cuestionario ({{ questions().length }} preguntas)</h3>
+      <div class="title-container">
+        <h3>{{ quizTitle() || 'Cuestionario' }} {{ questions().length > 0 ? '(' + questions().length + ' preguntas)' : '' }}</h3>
+      </div>
       <div class="quiz-header-actions">
-        <button class="btn-exam" (click)="startExam()">📝 Hacer examen</button>
+        <button class="btn-import" (click)="openImportModal()">📥 Importar</button>
         <button class="btn-create" (click)="addNewQuestion()">+ Nueva Pregunta</button>
+        <button class="btn-save" (click)="openSaveModal()" *ngIf="questions().length > 0" title="Guarda/Actualiza el test en este dispositivo">{{ loadedQuizId() ? '💾 Actualizar' : '💾 Guardar' }} examen</button>
       </div>
     </div>
-    <ol>
-      <li *ngFor="let q of questions()" class="question-card">
+    <ol *ngIf="questions().length > 0">
+      <li *ngFor="let q of questions()" class="question-card" #questionCard>
 
         <!-- View Mode -->
         <ng-container *ngIf="!q.isEditing">
@@ -97,51 +103,85 @@
 
       </li>
     </ol>
-  </section>
+  </div>
 
-  <!-- Exam Mode View -->
-  <section *ngIf="isExamActive()" class="exam-container">
-    <div class="exam-header">
-      <div class="exam-info">
-        <h3>Modo Examen</h3>
-        <p *ngIf="!examFinished()">Contesta a las preguntas y pulsa finalizar para ver tu nota.</p>
-        <div *ngIf="examFinished() && score()" class="score-card">
-          <h4>Resultado: {{ score()?.correct }} / {{ score()?.total }}</h4>
-          <p>Porcentaje: {{ (score()!.correct / score()!.total * 100).toFixed(1) }}%</p>
+  <!-- Import Modal Overlay -->
+  <div class="modal-overlay" *ngIf="showImportModal()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 *ngIf="!selectedQuizToImport()">Selecciona un cuestionario</h3>
+        <h3 *ngIf="selectedQuizToImport()">
+          <button class="btn-back-modal" (click)="selectedQuizToImport.set(null)">⬅️ Volver</button>
+          Preguntas de: {{ selectedQuizToImport()?.title }}
+        </h3>
+        <button class="btn-close" (click)="closeImportModal()">❌</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar..." [value]="searchQuery()" (input)="updateSearch($event)">
         </div>
-      </div>
-      <div class="exam-actions">
-        <button *ngIf="!examFinished()" class="btn-finish" (click)="finishExam()">🏁 Finalizar examen</button>
-        <button class="btn-back" (click)="resetExam()">⬅ Volver a edición</button>
-      </div>
-    </div>
 
-    <div class="exam-questions">
-      <div *ngFor="let q of questions(); let qIdx = index" class="exam-card" [class.result-mode]="examFinished()">
-        <div class="question-text">{{ qIdx + 1 }}. {{ q.question }}</div>
-        
-        <div class="exam-options">
-          <div *ngFor="let opt of q.options; let oIdx = index" 
-               class="exam-option"
-               [class.selected]="userAnswers()[q.id] === oIdx"
-               [class.correct-highlight]="examFinished() && opt.correct"
-               [class.incorrect-highlight]="examFinished() && userAnswers()[q.id] === oIdx && !opt.correct"
-               (click)="selectOption(q.id, oIdx)">
-            
-            <span class="option-marker">{{ opt.text.substring(0, 2) }}</span>
-            <span class="option-content">{{ opt.text.substring(3) }}</span>
-
-            <div *ngIf="examFinished()" class="feedback-icon">
-              <span *ngIf="opt.correct">✅</span>
-              <span *ngIf="userAnswers()[q.id] === oIdx && !opt.correct">❌</span>
+        <!-- List of Quizzes -->
+        <div *ngIf="!selectedQuizToImport()" class="modal-list">
+          <div *ngIf="filteredQuizzes().length === 0" class="empty-state">
+            <p>No se encontraron resultados.</p>
+          </div>
+          <div *ngFor="let quiz of filteredQuizzes()" class="modal-list-item" (click)="selectQuizForImport(quiz)">
+            <div>
+              <strong>{{ quiz.title }}</strong>
+              <div class="small-text">{{ quiz.questions.length }} preguntas</div>
             </div>
+            <button class="btn-select">▶️ Ver</button>
+          </div>
+        </div>
+
+        <!-- List of Questions in selected quiz -->
+        <div *ngIf="selectedQuizToImport()" class="modal-list">
+          <div *ngIf="filteredQuestions().length === 0" class="empty-state">
+            <p>No se encontraron preguntas.</p>
+          </div>
+          <div *ngFor="let q of filteredQuestions(); let i = index" 
+               class="modal-question-item selectable" 
+               (click)="toggleQuestionSelection(q.id)"
+               [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
+            <input type="checkbox" 
+                   [checked]="selectedQuestionIdsToImport().includes(q.id)" 
+                   (click)="$event.stopPropagation()"
+                   (change)="toggleQuestionSelection(q.id)">
+            <div class="q-text"><strong>{{ i + 1 }}.</strong> {{ q.question }}</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="exam-footer" *ngIf="!examFinished()">
-      <button class="btn-finish large" (click)="finishExam()">🏁 Finalizar examen y ver nota</button>
+      <div class="modal-footer" *ngIf="selectedQuizToImport()">
+        <button class="btn-import-bulk" 
+                [disabled]="selectedQuestionIdsToImport().length === 0" 
+                (click)="importSelectedQuestions()">
+          Importar seleccionadas ({{ selectedQuestionIdsToImport().length }})
+        </button>
+      </div>
     </div>
-  </section>
-</section>
+  </div>
+
+  <!-- Save Prompt Modal Overlay -->
+  <div class="modal-overlay" *ngIf="showSaveModal()">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h3><span class="icon-header">💾</span> {{ loadedQuizId() ? 'Actualizar' : 'Guardar' }} cuestionario</h3>
+        <button class="btn-close" (click)="closeSaveModal()">❌</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-instruction">Introduce un nombre para {{ loadedQuizId() ? 'actualizar' : 'guardar de forma segura' }} este cuestionario:</p>
+        <div class="search-container no-margin">
+          <input type="text" class="search-input" [value]="saveModalTitleInput()" (input)="updateSaveModalTitle($event)" placeholder="Nombre del cuestionario...">
+        </div>
+      </div>
+      <div class="modal-footer action-footer">
+        <button class="btn-cancel" (click)="closeSaveModal()">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmSave()" [disabled]="!saveModalTitleInput().trim().length">{{ loadedQuizId() ? 'Actualizar' : 'Guardar' }}</button>
+      </div>
+    </div>
+  </div>
+
+</div>

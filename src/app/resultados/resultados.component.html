@@ -1,0 +1,38 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-title">
+       <h2>Tus Resultados</h2>
+       <p>Historial de exámenes realizados.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Cargando resultados...</div>
+
+  <div *ngIf="!loading() && results().length === 0" class="empty-state">
+    <p>Aún no has hecho ningún examen.</p>
+    <button class="btn-primary" (click)="goToExams()">Empezar examen</button>
+  </div>
+
+  <div class="card-grid" *ngIf="!loading() && results().length > 0">
+    <div *ngFor="let res of results()" class="grid-card" style="position: relative; display: block;">
+      <div class="result-header">
+        <h3>{{ res.quizTitle }}</h3>
+        <span class="date">{{ res.date | date:'short' }}</span>
+      </div>
+
+      <div class="score-row">
+        <div class="score-circle" [class.pass]="getPercentage(res) >= 50" [class.fail]="getPercentage(res) < 50">
+          {{ getPercentage(res) | number:'1.0-0' }}%
+        </div>
+        <div class="score-details">
+          <span class="correct">✅ {{ res.correctAnswers }} correctas</span>
+          <span class="incorrect">❌ {{ res.incorrectAnswers }} incorrectas</span>
+        </div>
+      </div>
+
+      <button class="btn-delete-icon" (click)="deleteResult(res.id)" aria-label="Eliminar resultado">
+        🗑️
+      </button>
+    </div>
+  </div>
+</div>

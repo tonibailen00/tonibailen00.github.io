@@ -1,0 +1,102 @@
+<div class="page-container">
+  <div *ngIf="loading()" class="loading">Cargando...</div>
+  
+  <!-- Vista de lista cuando no hay quiz seleccionado desde las URL param -->
+  <div *ngIf="!loading() && !quiz()">
+    <div class="page-header">
+       <div class="header-title">
+         <h2>Seleccionar Examen</h2>
+         <p>Toca uno de tus tests para comenzar a jugar.</p>
+       </div>
+    </div>
+
+    <div *ngIf="quizzes().length === 0" class="empty-state">
+       <p>No tienes ningún cuestionario guardado.</p>
+       <button class="btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
+    </div>
+
+    <div class="card-grid">
+       <div *ngFor="let q of quizzes()" class="grid-card link-card" (click)="startExam(q.id)">
+          <div class="quiz-info">
+             <h3>{{ q.title }}</h3>
+             <p class="subtitle">{{ q.questions.length }} preguntas • {{ q.date | date:'dd/MM/yyyy' }}</p>
+          </div>
+          <div class="icon-play">▶️</div>
+       </div>
+    </div>
+  </div>
+  
+  <ng-container *ngIf="quiz() as qz">
+    <div class="exam-view-container">
+      <div class="exam-header-nav">
+        <button class="btn-back-icon" (click)="requestExit()">⬅</button>
+        <h2 class="truncate">{{ qz.title }}</h2>
+        <span class="progress-text">{{ currentQuestionIndex() + 1 }} / {{ qz.questions.length }}</span>
+      </div>
+
+      <div class="dots-scroll">
+        <button *ngFor="let q of qz.questions; let i = index" 
+                class="nav-dot"
+                [class.active]="i === currentQuestionIndex()"
+                [class.answered]="userAnswers()[q.id] !== undefined && !examFinished()"
+                [class.correct]="examFinished() && isCorrect(q.id, qz)"
+                [class.incorrect]="examFinished() && userAnswers()[q.id] !== undefined && !isCorrect(q.id, qz)"
+                [class.unanswered-wrong]="examFinished() && userAnswers()[q.id] === undefined"
+                (click)="goToQuestion(i)">
+          {{ i + 1 }}
+        </button>
+      </div>
+
+      <div *ngIf="examFinished() && score()" class="score-card">
+          <h4>Nota final: {{ score()?.correct }} / {{ score()?.total }}</h4>
+          <p>Porcentaje: {{ ((score()!.correct / score()!.total) * 100).toFixed(1) }}%</p>
+      </div>
+
+      <div class="exam-active-card" *ngIf="qz.questions[currentQuestionIndex()] as currentQ">
+        <div class="question-text">{{ currentQuestionIndex() + 1 }}. {{ currentQ.question }}</div>
+        
+        <div class="exam-options">
+          <div *ngFor="let opt of currentQ.options; let oIdx = index" 
+               class="exam-option"
+               [class.selected]="userAnswers()[currentQ.id] === oIdx"
+               [class.correct-highlight]="examFinished() && opt.correct"
+               [class.incorrect-highlight]="examFinished() && userAnswers()[currentQ.id] === oIdx && !opt.correct"
+               (click)="selectOption(currentQ.id, oIdx)">
+            
+            <span class="option-marker">{{ opt.text.substring(0, 2) }}</span>
+            <span class="option-content">{{ opt.text.substring(3) }}</span>
+
+            <div *ngIf="examFinished()" class="feedback-icon">
+              <span *ngIf="opt.correct">✅</span>
+              <span *ngIf="userAnswers()[currentQ.id] === oIdx && !opt.correct">❌</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exam-footer-nav">
+        <button class="btn-nav" [disabled]="currentQuestionIndex() === 0" (click)="goToQuestion(currentQuestionIndex() - 1)">Anterior</button>
+        <button *ngIf="currentQuestionIndex() < qz.questions.length - 1" class="btn-nav primary" (click)="goToQuestion(currentQuestionIndex() + 1)">Siguiente</button>
+        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && !examFinished()" class="btn-finish-exam" (click)="finishExam(qz)">🏁 Finalizar</button>
+        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && examFinished()" class="btn-finish-exam" (click)="requestExit()">Volver a test</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Modal de Confirmación de Salida -->
+  <div class="modal-overlay" *ngIf="showExitModal()">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h3><span class="icon-header">⚠️</span> Abandonar examen</h3>
+        <button class="btn-close" (click)="showExitModal.set(false)">❌</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-instruction">¿Estás seguro de que quieres salir? Tu progreso actual se perderá.</p>
+      </div>
+      <div class="modal-footer action-footer">
+        <button class="btn-cancel" (click)="showExitModal.set(false)">Cancelar</button>
+        <button class="btn-confirm" style="background: #ef4444;" (click)="confirmExit()">Salir y perder progreso</button>
+      </div>
+    </div>
+  </div>
+</div>

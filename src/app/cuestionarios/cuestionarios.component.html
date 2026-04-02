@@ -1,0 +1,57 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-title">
+      <h2>Mis Test Guardados</h2>
+      <p>Gestiona y administra tus cuestionarios locales.</p>
+    </div>
+    <div class="header-actions-row">
+        <label class="btn-import">
+            Cargar JSON
+            <input type="file" accept="application/json,.json" (change)="importFromJson($event)" style="display:none;" />
+        </label>
+    </div>
+  </div>
+  
+  <div *ngIf="loading()" class="loading">Cargando...</div>
+  
+  <div *ngIf="!loading() && quizzes().length === 0" class="empty-state">
+    <p>No tienes ningún cuestionario guardado.</p>
+    <button class="btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
+  </div>
+
+  <div class="card-grid">
+    <div *ngFor="let quiz of quizzes()" class="grid-card">
+      <div class="quiz-info">
+        <h3>{{ quiz.title }}</h3>
+        <p class="subtitle">{{ quiz.questions.length }} preguntas • {{ quiz.date | date:'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+      <div class="quiz-actions">
+        <!-- Botones de acción sólo con iconos -->
+        <button class="btn-icon btn-play" (click)="startExam(quiz.id)" title="Jugar">▶️</button>
+        <button class="btn-icon btn-edit" (click)="editQuiz(quiz.id)" title="Editar">✏️</button>
+        <button class="btn-icon btn-export" (click)="exportToJson(quiz)" title="Descargar JSON">⬇️</button>
+        <button class="btn-icon btn-delete" (click)="deleteQuiz(quiz.id)" title="Eliminar">🗑️</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Prompt Modal -->
+  <div class="modal-overlay" *ngIf="showImportPrompt()">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h3><span class="icon-header">📥</span> Importar lista</h3>
+        <button class="btn-close" (click)="closeImportPrompt()">❌</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-instruction">Se ha detectado una lista de preguntas. Introduce un nombre para este nuevo cuestionario:</p>
+        <div class="search-container no-margin">
+          <input type="text" class="search-input" [value]="importPromptTitle()" (input)="updateImportPromptTitle($event)" placeholder="Nombre...">
+        </div>
+      </div>
+      <div class="modal-footer action-footer">
+        <button class="btn-cancel" (click)="closeImportPrompt()">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmImportPrompt()" [disabled]="!importPromptTitle().trim().length">Importar</button>
+      </div>
+    </div>
+  </div>
+</div>
