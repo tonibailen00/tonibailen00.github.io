@@ -1,23 +1,25 @@
 import { Component, signal, computed, inject, ViewChildren, QueryList, ElementRef, OnInit } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PdfParserService, QuizQuestion, ParseMode } from './pdf-parser.service';
-import { StorageService, StoredQuiz } from '../storage.service';
+import { ActivatedRoute } from '@angular/router';
+import { PdfParserService, QuizQuestion, ParseMode } from '../services/pdf-parser.service';
+import { StorageService, StoredQuiz } from '../services/storage.service';
+import { NavigationService } from '../services/navigation.service';
+import { UiService } from '../services/ui.service';
 
 @Component({
     selector: 'pdf-quiz',
     standalone: true,
     imports: [CommonModule, FormsModule],
     templateUrl: './pdf-quiz.component.html',
-    styleUrls: ['./pdf-quiz.component.scss'],
+    styleUrls: ['./pdf-quiz.component.scss', '../../styles.scss'],
 })
 export class PdfQuizComponent implements OnInit {
     private pdfParser = inject(PdfParserService);
-    private document = inject(DOCUMENT);
     private storage = inject(StorageService);
     private route = inject(ActivatedRoute);
-    private router = inject(Router);
+    private navService = inject(NavigationService);
+    private ui = inject(UiService);
 
     @ViewChildren('questionCard') questionCards!: QueryList<ElementRef>;
 
@@ -29,18 +31,21 @@ export class PdfQuizComponent implements OnInit {
     file?: File;
     visualized = signal(false);
 
+    // Edit Question Modal state
+    showEditModal = signal(false);
+    editingQuestion = signal<QuizQuestion | null>(null);
+    isCreatingNew = signal(false);
+
     // Import modal state
     showImportModal = signal(false);
     savedQuizzes = signal<StoredQuiz[]>([]);
     selectedQuizToImport = signal<StoredQuiz | null>(null);
     selectedQuestionIdsToImport = signal<number[]>([]);
-    
-    // Save modal state
-    showSaveModal = signal(false);
-    saveModalTitleInput = signal('');
-    
+
     // Search state
     searchQuery = signal('');
+    hasSavedQuizzes = signal(false);
+
     filteredQuizzes = computed(() => {
         const query = this.searchQuery().toLowerCase();
         return this.savedQuizzes().filter(q => q.title.toLowerCase().includes(query));
@@ -61,8 +66,7 @@ export class PdfQuizComponent implements OnInit {
         // Al cargar, verificar si venimos de "editar" (con un id por query param)
         const id = this.route.snapshot.queryParamMap.get('id');
         if (id) {
-            this.loading.set(true);
-            try {
+            await this.ui.withLoading(this.loading, async () => {
                 const qz = await this.storage.getQuiz(id);
                 if (qz) {
                     this.loadedQuizId.set(qz.id);
@@ -70,15 +74,14 @@ export class PdfQuizComponent implements OnInit {
                     this.questions.set(qz.questions);
                     this.visualized.set(true); // Simula que ya procesamos el layout base
                 } else {
-                    alert('No se encontró el cuestionario para editar.');
+                    await this.ui.alert('No se encontró el cuestionario para editar.', 'Cuestionario no encontrado', 'ph-bold ph-x-circle');
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Error al cargar cuestionario.');
-            } finally {
-                this.loading.set(false);
-            }
+            });
         }
+
+        // Verificar si existen tests guardados para mostrar/ocultar botón de importar
+        const saved = await this.storage.getQuizzes();
+        this.hasSavedQuizzes.set(saved.length > 0);
     }
 
     // Modes for identifying correct answers: 
@@ -101,39 +104,63 @@ export class PdfQuizComponent implements OnInit {
 
     async visualize() {
         if (!this.file) return;
-        this.loading.set(true);
 
-        try {
-            const buffer = await this.file.arrayBuffer();
+        await this.ui.withLoading(this.loading, async () => {
+            const buffer = await this.file!.arrayBuffer();
             const mode = this.parseMode();
             const quizQuestions = await this.pdfParser.parsePdf(buffer, mode);
 
             this.questions.set(quizQuestions);
             this.visualized.set(true);
-        }
-        catch (e) {
-            console.error('Error visualizing PDF:', e);
-        }
-        finally {
-            this.loading.set(false);
-        }
+        });
     }
 
     // CRUD Methods
     editQuestion(q: QuizQuestion) {
-        q.isEditing = true;
-        // Trigger signal update
-        this.questions.set([...this.questions()]);
+        // Clonar para no mutar directamente hasta guardar
+        this.editingQuestion.set(JSON.parse(JSON.stringify(q)));
+        this.isCreatingNew.set(false);
+        this.showEditModal.set(true);
     }
 
-    saveQuestion(q: QuizQuestion) {
-        q.isEditing = false;
-        this.questions.set([...this.questions()]);
-    }
+    saveEditModal() {
+        const edited = this.editingQuestion();
+        if (!edited) return;
 
-    deleteQuestion(q: QuizQuestion) {
         const current = this.questions();
-        this.questions.set(current.filter(item => item !== q));
+        edited.isEditing = false;
+
+        if (this.isCreatingNew()) {
+            this.questions.set([...current, edited]);
+            setTimeout(() => {
+                const lastItem = this.questionCards.last;
+                if (lastItem) lastItem.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 50);
+        } else {
+            const idx = current.findIndex(q => q.id === edited.id);
+            if (idx > -1) {
+                current[idx] = "text" in edited ? edited : edited;
+                this.questions.set([...current]);
+            }
+        }
+        this.closeEditModal();
+    }
+
+    closeEditModal() {
+        this.showEditModal.set(false);
+        this.editingQuestion.set(null);
+    }
+
+    cancelEditModal() {
+        this.closeEditModal();
+    }
+
+    async deleteQuestion(q: QuizQuestion) {
+        const confirmed = await this.ui.confirm('¿Seguro que quieres eliminar esta pregunta?', 'Eliminar pregunta', 'ph-bold ph-trash', 'Eliminar');
+        if (confirmed) {
+            const current = this.questions();
+            this.questions.set(current.filter(item => item !== q));
+        }
     }
 
     addNewQuestion() {
@@ -148,74 +175,68 @@ export class PdfQuizComponent implements OnInit {
                 { text: 'c) Opción C', correct: false },
                 { text: 'd) Opción D', correct: false }
             ],
-            isEditing: true
+            isEditing: false
         };
-        this.questions.set([...current, newQ]);
-        // Wait for DOM to append the new item and scroll to it
-        setTimeout(() => {
-            const lastItem = this.questionCards.last;
-            if (lastItem) {
-                lastItem.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }, 50);
+        this.editingQuestion.set(newQ);
+        this.isCreatingNew.set(true);
+        this.showEditModal.set(true);
     }
 
     addOption(q: QuizQuestion) {
         const letters = 'abcdefghijklmnopqrstuvwxyz';
         const nextLetter = q.options.length < letters.length ? letters[q.options.length] : '?';
         q.options.push({ text: `${nextLetter}) Nueva opción`, correct: false });
-        this.questions.set([...this.questions()]);
+        // Force reactivity
+        this.editingQuestion.set({ ...q });
     }
 
     removeOption(q: QuizQuestion, index: number) {
         q.options.splice(index, 1);
-        this.questions.set([...this.questions()]);
+        this.editingQuestion.set({ ...q });
     }
 
-    openSaveModal() {
-        this.saveModalTitleInput.set(this.quizTitle());
-        this.showSaveModal.set(true);
-    }
+    async openSaveModal() {
+        if (!this.questions().length) return;
+        const defaultTitle = this.quizTitle();
 
-    closeSaveModal() {
-        this.showSaveModal.set(false);
-    }
+        const title = await this.ui.prompt(
+            'Introduce un nombre para este cuestionario:',
+            'Guardar Cuestionario',
+            'Nombre...',
+            defaultTitle,
+            'ph-bold ph-floppy-disk'
+        );
 
-    updateSaveModalTitle(event: Event) {
-        const input = event.target as HTMLInputElement;
-        this.saveModalTitleInput.set(input.value);
-    }
+        if (title && title.trim()) {
+            const newQuiz: StoredQuiz = {
+                id: this.loadedQuizId() || crypto.randomUUID(),
+                title: title.trim(),
+                date: Date.now(),
+                questions: this.questions()
+            };
 
-    async confirmSave() {
-        const qTitle = this.saveModalTitleInput().trim();
-        if (!qTitle) return;
+            await this.ui.withLoading(this.loading, async () => {
+                try {
+                    await this.storage.saveQuiz(newQuiz);
+                    const wasEditing = !!this.loadedQuizId();
 
-        const newQuiz = {
-            id: this.loadedQuizId() || crypto.randomUUID(),
-            title: qTitle,
-            date: Date.now(),
-            questions: this.questions()
-        };
+                    // Limpiar sesión
+                    this.questions.set([]);
+                    this.quizTitle.set('Cuestionario Nuevo');
+                    this.loadedQuizId.set(null);
+                    this.file = undefined;
 
-        try {
-            await this.storage.saveQuiz(newQuiz);
-            
-            const wasEditing = !!this.loadedQuizId();
-            
-            // Mostraríamos una alerta, pero podemos simplemente limpiar
-            this.questions.set([]);
-            this.quizTitle.set('Cuestionario Nuevo');
-            this.loadedQuizId.set(null);
-            this.file = undefined;
-            this.showSaveModal.set(false);
-            
-            // Navigate back to the test list if we were editing an existing one
-            if (wasEditing) {
-                this.router.navigate(['/cuestionarios']);
-            }
-        } catch (e) {
-            console.error(e);
-            alert('Error guardando en el dispositivo.');
+                    await this.ui.alert('El cuestionario se ha guardado con éxito.', '¡Guardado!', 'ph-bold ph-check-circle');
+
+                    // Regresar a la lista si estábamos editando
+                    if (wasEditing) {
+                        this.navService.goToCuestionarios();
+                    }
+                } catch (e) {
+                    console.error(e);
+                    await this.ui.alert('Error guardando en el dispositivo.', 'Error', 'ph-bold ph-x-circle');
+                }
+            });
         }
     }
 
@@ -255,7 +276,7 @@ export class PdfQuizComponent implements OnInit {
         let maxId = currentQuestions.reduce((max, item) => Math.max(max, item.id), 0);
 
         const newQuestions: QuizQuestion[] = [];
-        
+
         selectedQuiz.questions.forEach(q => {
             if (selectedIds.includes(q.id)) {
                 newQuestions.push({
@@ -267,7 +288,7 @@ export class PdfQuizComponent implements OnInit {
         });
 
         this.questions.set([...currentQuestions, ...newQuestions]);
-        
+
         // Wait and scroll
         setTimeout(() => {
             const lastItem = this.questionCards.last;

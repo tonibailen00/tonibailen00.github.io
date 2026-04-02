@@ -1,8 +1,8 @@
 <div class="page-container">
   <div class="page-header">
     <div class="header-title">
-       <h2>Tus Resultados</h2>
-       <p>Historial de exámenes realizados.</p>
+      <h2>Tus Resultados</h2>
+      <p>Historial de exámenes realizados.</p>
     </div>
   </div>
 
@@ -25,13 +25,13 @@
           {{ getPercentage(res) | number:'1.0-0' }}%
         </div>
         <div class="score-details">
-          <span class="correct">✅ {{ res.correctAnswers }} correctas</span>
-          <span class="incorrect">❌ {{ res.incorrectAnswers }} incorrectas</span>
+          <span class="correct"><i class="ph-fill ph-check-circle"></i> {{ res.correctAnswers }} correctas</span>
+          <span class="incorrect"><i class="ph-fill ph-x-circle"></i> {{ res.incorrectAnswers }} incorrectas</span>
         </div>
       </div>
 
       <button class="btn-delete-icon" (click)="deleteResult(res.id)" aria-label="Eliminar resultado">
-        🗑️
+        <i class="ph-bold ph-trash"></i>
       </button>
     </div>
   </div>

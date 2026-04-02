@@ -1,7 +1,8 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { StorageService, ExamResult } from '../storage.service';
+import { StorageService, ExamResult } from '../services/storage.service';
+import { NavigationService } from '../services/navigation.service';
+import { UiService } from '../services/ui.service';
 
 @Component({
   selector: 'app-resultados',
@@ -11,8 +12,9 @@ import { StorageService, ExamResult } from '../storage.service';
   styleUrls: ['./resultados.component.scss']
 })
 export class ResultadosComponent implements OnInit {
-  private router = inject(Router);
+  private navService = inject(NavigationService);
   private storage = inject(StorageService);
+  private ui = inject(UiService);
 
   results = signal<ExamResult[]>([]);
   loading = signal(true);
@@ -22,15 +24,10 @@ export class ResultadosComponent implements OnInit {
   }
 
   async loadResults() {
-    this.loading.set(true);
-    try {
+    await this.ui.withLoading(this.loading, async () => {
       const data = await this.storage.getResults();
       this.results.set(data);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.loading.set(false);
-    }
+    });
   }
 
   getPercentage(res: ExamResult): number {
@@ -39,13 +36,14 @@ export class ResultadosComponent implements OnInit {
   }
 
   async deleteResult(id: string) {
-    if (confirm('¿Eliminar este resultado del historial?')) {
+    const confirmed = await this.ui.confirm('¿Eliminar este resultado del historial?', 'Eliminar historial', 'ph-bold ph-trash');
+    if (confirmed) {
       await this.storage.deleteResult(id);
       await this.loadResults();
     }
   }
 
   goToExams() {
-    this.router.navigate(['/examen']);
+    this.navService.goToExamen();
   }
 }

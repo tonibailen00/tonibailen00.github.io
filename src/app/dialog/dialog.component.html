@@ -1,0 +1,23 @@
+<div class="modal-overlay" *ngIf="ui.dialogState() as state">
+  <div class="modal-content modal-small">
+    <div class="modal-header">
+      <h3><span class="icon-header" *ngIf="state.icon"><i [class]="state.icon"></i></span> {{ state.title }}</h3>
+      <button class="btn-close" (click)="cancel()"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-instruction">{{ state.message }}</p>
+
+      <!-- Input para el prompt -->
+      <div class="search-container no-margin" *ngIf="state.type === 'prompt'">
+        <input type="text" class="search-input" [(ngModel)]="state.inputValue"
+          [placeholder]="state.inputPlaceholder || ''" (keyup.enter)="confirm()">
+      </div>
+    </div>
+    <div class="modal-footer action-footer">
+      <button class="btn-cancel" *ngIf="state.type !== 'alert'" (click)="cancel()">Cancelar</button>
+      <button class="btn-confirm" [disabled]="state.type === 'prompt' && !state.inputValue?.trim()" (click)="confirm()">
+        {{ state.confirmText || 'Aceptar' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,19 +1,20 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { StorageService, StoredQuiz } from '../storage.service';
-import { UiService } from '../ui.service';
+import { ActivatedRoute } from '@angular/router';
+import { StorageService, StoredQuiz } from '../services/storage.service';
+import { UiService } from '../services/ui.service';
+import { NavigationService } from '../services/navigation.service';
 
 @Component({
-  selector: 'app-examen',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './examen.component.html',
-  styleUrls: ['../pdf-quiz/pdf-quiz.component.scss', './examen.component.scss']
+    selector: 'app-examen',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './examen.component.html',
+    styleUrls: ['../pdf-quiz/pdf-quiz.component.scss', './examen.component.scss', '../../styles.scss']
 })
 export class ExamenComponent implements OnInit, OnDestroy {
     private route = inject(ActivatedRoute);
-    private router = inject(Router);
+    private navService = inject(NavigationService);
     private storage = inject(StorageService);
     private document = inject(DOCUMENT);
     private ui = inject(UiService);
@@ -21,8 +22,7 @@ export class ExamenComponent implements OnInit, OnDestroy {
     quiz = signal<StoredQuiz | null>(null);
     quizzes = signal<StoredQuiz[]>([]);
     loading = signal(true);
-    showExitModal = signal(false);
-    
+
     // Exam Data
     currentQuestionIndex = signal(0);
     examFinished = signal(false);
@@ -41,40 +41,30 @@ export class ExamenComponent implements OnInit, OnDestroy {
     }
 
     async loadAllQuizzes() {
-        this.loading.set(true);
-        try {
+        await this.ui.withLoading(this.loading, async () => {
             const allQuizzes = await this.storage.getQuizzes();
             this.quizzes.set(allQuizzes);
             this.quiz.set(null); // Reset single quiz view
-        } catch (e) {
-            console.error(e);
-        } finally {
-            this.loading.set(false);
-        }
+        });
     }
 
     startExam(id: string) {
-        this.router.navigate(['/examen'], { queryParams: { id } });
+        this.navService.goToExamen(id);
     }
 
     async loadQuizData(id: string) {
-        this.loading.set(true);
         this.currentQuestionIndex.set(0);
         this.examFinished.set(false);
         this.userAnswers.set({});
         this.score.set(null);
 
-        try {
+        await this.ui.withLoading(this.loading, async () => {
             const data = await this.storage.getQuiz(id);
             if (data) {
                 this.quiz.set(data);
                 this.ui.isExamMode.set(true);
             }
-        } catch(e) {
-            console.error(e);
-        } finally {
-            this.loading.set(false);
-        }
+        });
     }
 
     selectOption(questionId: number, optionIndex: number) {
@@ -86,10 +76,10 @@ export class ExamenComponent implements OnInit, OnDestroy {
     isCorrect(qId: number, qz: StoredQuiz): boolean {
         const optionIdx = this.userAnswers()[qId];
         if (optionIdx === undefined) return false;
-        
+
         const q = qz.questions.find(x => x.id === qId);
         if (!q) return false;
-        
+
         return q.options[optionIdx]?.correct === true;
     }
 
@@ -97,19 +87,21 @@ export class ExamenComponent implements OnInit, OnDestroy {
         this.currentQuestionIndex.set(index);
     }
 
-    requestExit() {
+    async requestExit() {
         if (this.quiz() && !this.examFinished()) {
-            this.showExitModal.set(true);
+            const confirmed = await this.ui.confirm('¿Estás seguro de que quieres salir? Tu progreso actual se perderá.', 'Abandonar examen', 'ph-bold ph-warning', 'Salir y perder progreso');
+            if (confirmed) {
+                this.confirmExit();
+            }
         } else {
             this.confirmExit();
         }
     }
 
     confirmExit() {
-        this.showExitModal.set(false);
         this.quiz.set(null);
         this.ui.isExamMode.set(false);
-        this.router.navigate(['/examen']);
+        this.navService.goToExamen();
     }
 
     async finishExam(qz: StoredQuiz) {
@@ -148,11 +140,11 @@ export class ExamenComponent implements OnInit, OnDestroy {
     }
 
     goToQuizzes() {
-        this.router.navigate(['/cuestionarios']);
+        this.navService.goToCuestionarios();
     }
 
     goToCreate() {
-        this.router.navigate(['/crear']);
+        this.navService.goToCreate();
     }
 
     ngOnDestroy() {

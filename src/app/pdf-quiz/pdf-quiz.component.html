@@ -39,7 +39,8 @@
     <!-- Empty state message -->
     <div *ngIf="visualized() && questions().length === 0 && !loading()" class="empty-state">
       <p>No se ha encontrado ninguna pregunta con el formato esperado en este PDF.</p>
-      <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el "Generar preguntas" interactuando con los distintos modos disponibles.</small>
+      <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el "Generar preguntas"
+        interactuando con los distintos modos disponibles.</small>
     </div>
   </div>
 
@@ -47,62 +48,68 @@
   <div class="content-card quiz-list">
     <div class="quiz-header">
       <div class="title-container">
-        <h3>{{ quizTitle() || 'Cuestionario' }} {{ questions().length > 0 ? '(' + questions().length + ' preguntas)' : '' }}</h3>
-      </div>
-      <div class="quiz-header-actions">
-        <button class="btn-import" (click)="openImportModal()">📥 Importar</button>
-        <button class="btn-create" (click)="addNewQuestion()">+ Nueva Pregunta</button>
-        <button class="btn-save" (click)="openSaveModal()" *ngIf="questions().length > 0" title="Guarda/Actualiza el test en este dispositivo">{{ loadedQuizId() ? '💾 Actualizar' : '💾 Guardar' }} examen</button>
+        <h3>{{ quizTitle() || 'Cuestionario' }} {{ questions().length > 0 ? '(' + questions().length + ' preguntas)' :
+          '' }}</h3>
       </div>
     </div>
     <ol *ngIf="questions().length > 0">
       <li *ngFor="let q of questions()" class="question-card" #questionCard>
 
-        <!-- View Mode -->
-        <ng-container *ngIf="!q.isEditing">
-          <div class="question-header">
-            <div class="question">{{ q.id }}. {{ q.question }}</div>
-            <div class="question-actions">
-              <button class="icon-btn edit-btn" (click)="editQuestion(q)" title="Editar">✏️</button>
-              <button class="icon-btn delete-btn" (click)="deleteQuestion(q)" title="Eliminar">🗑️</button>
-            </div>
+        <!-- View Mode (Edit moved to Modal) -->
+        <div class="question-header">
+          <div class="question">{{ q.id }}. {{ q.question }}</div>
+          <div class="question-actions">
+            <button class="icon-btn edit-btn" (click)="editQuestion(q)" title="Editar"><i
+                class="ph ph-pencil-simple"></i></button>
+            <button class="icon-btn delete-btn" (click)="deleteQuestion(q)" title="Eliminar"><i
+                class="ph ph-trash"></i></button>
           </div>
-          <ul class="options">
-            <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
-              <span *ngIf="opt.correct"><strong>✔ {{ opt.text }}</strong></span>
-              <span *ngIf="!opt.correct">{{ opt.text }}</span>
-            </li>
-          </ul>
-        </ng-container>
-
-        <!-- Edit Mode -->
-        <ng-container *ngIf="q.isEditing">
-          <div class="edit-mode">
-            <div class="form-group row">
-              <input type="number" [(ngModel)]="q.id" class="id-input" placeholder="Nº">
-              <textarea [(ngModel)]="q.question" class="question-input" rows="2"
-                placeholder="Escribe la pregunta..."></textarea>
-            </div>
-
-            <div class="options-edit">
-              <h4>Opciones:</h4>
-              <div *ngFor="let opt of q.options; let i = index" class="option-edit-row">
-                <input type="checkbox" [(ngModel)]="opt.correct" title="¿Opción correcta?">
-                <input type="text" [(ngModel)]="opt.text" class="option-input" placeholder="Texto de la opción">
-                <button class="icon-btn delete-btn" (click)="removeOption(q, i)" title="Quitar opción">❌</button>
-              </div>
-              <button class="btn-small mt-2" (click)="addOption(q)">+ Añadir Opción</button>
-            </div>
-
-            <div class="edit-actions">
-              <button class="save-btn" (click)="saveQuestion(q)">💾 Guardar Cambios</button>
-              <button class="delete-btn" (click)="deleteQuestion(q)">🗑️ Eliminar Pregunta</button>
-            </div>
-          </div>
-        </ng-container>
+        </div>
+        <ul class="options">
+          <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
+            <span *ngIf="opt.correct"><strong>✔ {{ opt.text }}</strong></span>
+            <span *ngIf="!opt.correct">{{ opt.text }}</span>
+          </li>
+        </ul>
 
       </li>
     </ol>
+  </div>
+
+  <!-- Edit/Create Question Modal Overlay -->
+  <div class="modal-overlay" *ngIf="showEditModal() && editingQuestion() as eq">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ isCreatingNew() ? 'Nueva Pregunta' : 'Editar Pregunta ' + eq.id }}</h3>
+        <button class="btn-close" (click)="cancelEditModal()"><i class="ph ph-x"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="edit-mode" style="margin-top:0; border:none; padding:0; box-shadow:none; background:transparent;">
+          <div class="form-group row">
+            <input type="number" [(ngModel)]="eq.id" class="id-input" placeholder="Nº">
+            <textarea [(ngModel)]="eq.question" class="question-input" rows="3"
+              placeholder="Escribe la pregunta..."></textarea>
+          </div>
+
+          <div class="options-edit">
+            <h4>Opciones:</h4>
+            <div *ngFor="let opt of eq.options; let i = index" class="option-edit-row">
+              <input type="checkbox" [(ngModel)]="opt.correct" title="¿Opción correcta?">
+              <input type="text" [(ngModel)]="opt.text" class="option-input" placeholder="Texto de la opción">
+              <button class="icon-btn delete-btn" (click)="removeOption(eq, i)" title="Quitar opción"><i
+                  class="ph ph-x"></i></button>
+            </div>
+            <button class="btn-small mt-2" (click)="addOption(eq)"><i class="ph ph-plus"></i> Añadir Opción</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer action-footer">
+        <button class="btn-cancel" (click)="cancelEditModal()">Cancelar</button>
+        <button class="btn-confirm" (click)="saveEditModal()">Guardar</button>
+      </div>
+    </div>
   </div>
 
   <!-- Import Modal Overlay -->
@@ -111,15 +118,17 @@
       <div class="modal-header">
         <h3 *ngIf="!selectedQuizToImport()">Selecciona un cuestionario</h3>
         <h3 *ngIf="selectedQuizToImport()">
-          <button class="btn-back-modal" (click)="selectedQuizToImport.set(null)">⬅️ Volver</button>
+          <button class="btn-back-modal" (click)="selectedQuizToImport.set(null)"><i class="ph ph-arrow-left"></i>
+            Volver</button>
           Preguntas de: {{ selectedQuizToImport()?.title }}
         </h3>
-        <button class="btn-close" (click)="closeImportModal()">❌</button>
+        <button class="btn-close" (click)="closeImportModal()"><i class="ph ph-x"></i></button>
       </div>
-      
+
       <div class="modal-body">
         <div class="search-container">
-          <input type="text" class="search-input" placeholder="Buscar..." [value]="searchQuery()" (input)="updateSearch($event)">
+          <input type="text" class="search-input" placeholder="Buscar..." [value]="searchQuery()"
+            (input)="updateSearch($event)">
         </div>
 
         <!-- List of Quizzes -->
@@ -141,47 +150,37 @@
           <div *ngIf="filteredQuestions().length === 0" class="empty-state">
             <p>No se encontraron preguntas.</p>
           </div>
-          <div *ngFor="let q of filteredQuestions(); let i = index" 
-               class="modal-question-item selectable" 
-               (click)="toggleQuestionSelection(q.id)"
-               [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
-            <input type="checkbox" 
-                   [checked]="selectedQuestionIdsToImport().includes(q.id)" 
-                   (click)="$event.stopPropagation()"
-                   (change)="toggleQuestionSelection(q.id)">
+          <div *ngFor="let q of filteredQuestions(); let i = index" class="modal-question-item selectable"
+            (click)="toggleQuestionSelection(q.id)" [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
+            <input type="checkbox" [checked]="selectedQuestionIdsToImport().includes(q.id)"
+              (click)="$event.stopPropagation()" (change)="toggleQuestionSelection(q.id)">
             <div class="q-text"><strong>{{ i + 1 }}.</strong> {{ q.question }}</div>
           </div>
         </div>
       </div>
 
       <div class="modal-footer" *ngIf="selectedQuizToImport()">
-        <button class="btn-import-bulk" 
-                [disabled]="selectedQuestionIdsToImport().length === 0" 
-                (click)="importSelectedQuestions()">
+        <button class="btn-import-bulk" [disabled]="selectedQuestionIdsToImport().length === 0"
+          (click)="importSelectedQuestions()">
           Importar seleccionadas ({{ selectedQuestionIdsToImport().length }})
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Save Prompt Modal Overlay -->
-  <div class="modal-overlay" *ngIf="showSaveModal()">
-    <div class="modal-content modal-small">
-      <div class="modal-header">
-        <h3><span class="icon-header">💾</span> {{ loadedQuizId() ? 'Actualizar' : 'Guardar' }} cuestionario</h3>
-        <button class="btn-close" (click)="closeSaveModal()">❌</button>
-      </div>
-      <div class="modal-body">
-        <p class="modal-instruction">Introduce un nombre para {{ loadedQuizId() ? 'actualizar' : 'guardar de forma segura' }} este cuestionario:</p>
-        <div class="search-container no-margin">
-          <input type="text" class="search-input" [value]="saveModalTitleInput()" (input)="updateSaveModalTitle($event)" placeholder="Nombre del cuestionario...">
-        </div>
-      </div>
-      <div class="modal-footer action-footer">
-        <button class="btn-cancel" (click)="closeSaveModal()">Cancelar</button>
-        <button class="btn-confirm" (click)="confirmSave()" [disabled]="!saveModalTitleInput().trim().length">{{ loadedQuizId() ? 'Actualizar' : 'Guardar' }}</button>
-      </div>
-    </div>
-  </div>
+  <!-- Floating Action Buttons (Apple Liquid Glass Style) -->
+  <div class="fab-group">
+    <!-- Botón condicional de Importar (solo si hay guardados) -->
+    <button class="fab-item fab-small" *ngIf="hasSavedQuizzes()" (click)="openImportModal()" title="Importar preguntas">
+      <i class="ph-bold ph-download-simple"></i>
+    </button>
 
+    <!-- Botones siempre fijos -->
+    <button class="fab-item fab-small" (click)="addNewQuestion()" title="Añadir pregunta desde cero">
+      <i class="ph-bold ph-plus"></i>
+    </button>
+    <button class="fab-item fab-main" *ngIf="questions().length > 0" (click)="openSaveModal()" title="Guardar examen">
+      <i class="ph-bold ph-floppy-disk"></i>
+    </button>
+  </div>
 </div>

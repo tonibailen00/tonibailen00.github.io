@@ -1,20 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
   /* Apple Glassmorphism Variables */
-  --primary-color: #007aff; /* Apple Blue */
+  --primary-color: #007aff;
+  /* Apple Blue */
   --primary-hover: #0056b3;
-  --success-color: #34c759; /* Apple Green */
-  --danger-color: #ff3b30; /* Apple Red */
-  
+  --success-color: #34c759;
+  /* Apple Green */
+  --danger-color: #ff3b30;
+  /* Apple Red */
+
   /* Animated / Gradient Background */
   --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  
+
   /* Glass Variables */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.5);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
   --glass-blur: blur(20px);
-  
+
   --text-main: #1d1d1f;
   --text-muted: #86868b;
   --border-color: rgba(0, 0, 0, 0.1);
@@ -44,11 +47,12 @@ button {
    ========================================================================= */
 
 /* Main wrapper for all views */
-.page-container { 
+.page-container {
   width: 95%;
-  margin: 3rem auto; 
-  padding: 2rem; 
-  padding-bottom: 90px; /* Accounts for bottom nav on mobile */
+  margin: 3rem auto;
+  padding: 2rem;
+  padding-bottom: 90px;
+  /* Accounts for bottom nav on mobile */
 }
 
 /* Base style for forms and large card blocks */
@@ -79,8 +83,8 @@ button {
   gap: 0.25rem;
 }
 
-.page-header .header-title h2 { 
-  color: var(--primary-color); 
+.page-header .header-title h2 {
+  color: var(--primary-color);
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
@@ -99,22 +103,22 @@ button {
 }
 
 /* Empty State & Loading */
-.loading { 
-  text-align: center; 
-  color: var(--text-muted); 
-  margin-top: 3rem; 
+.loading {
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 3rem;
 }
 
-.empty-state { 
-  text-align: center; 
-  padding: 3rem 1rem; 
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
   margin-top: 2rem;
-  background: var(--glass-bg); 
+  background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: 20px; 
-  box-shadow: var(--glass-shadow); 
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow);
 }
 
 .empty-state p {
@@ -123,27 +127,32 @@ button {
 }
 
 /* Buttons */
-.btn-primary { 
-  background: var(--primary-color); 
-  color: white; 
-  padding: 0.75rem 1.5rem; 
-  border: none; 
-  border-radius: 12px; /* Apple uses softer rounded buttons */
-  font-weight: 600; 
-  cursor: pointer; 
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  /* Apple uses softer rounded buttons */
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: 0 4px 6px rgba(0, 122, 255, 0.2); /* Soft colored shadow */
+  box-shadow: 0 4px 6px rgba(0, 122, 255, 0.2);
+  /* Soft colored shadow */
 }
+
 .btn-primary:hover {
   background: var(--primary-hover);
   transform: translateY(-1px);
   box-shadow: 0 6px 12px rgba(0, 122, 255, 0.3);
 }
+
 .btn-primary:active {
   transform: translateY(1px) scale(0.98);
 }
 
-.btn-import, .btn-export {
+.btn-import,
+.btn-export {
   display: inline-block;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
@@ -155,37 +164,51 @@ button {
   cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.6);
   transition: all 0.2s;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
 }
-.btn-import:hover, .btn-export:hover {
+
+.btn-import:hover,
+.btn-export:hover {
   background: rgba(255, 255, 255, 0.8);
 }
 
 /* Button Variations */
-.btn-play { 
-  background: var(--success-color); 
-  color: white; 
+.btn-play {
+  background: var(--success-color);
+  color: white;
 }
-.btn-play:hover { background: #059669; }
+
+.btn-play:hover {
+  background: #059669;
+}
 
 .btn-edit {
   background: #3b82f6;
   color: white;
 }
-.btn-edit:hover { background: #2563eb; }
+
+.btn-edit:hover {
+  background: #2563eb;
+}
 
 .btn-export {
-  background: #fdf2f8; 
-  color: #9d174d; 
-  border: 1px solid #fbcfe8; 
+  background: #fdf2f8;
+  color: #9d174d;
+  border: 1px solid #fbcfe8;
 }
-.btn-export:hover { background: #fce7f3; }
 
-.btn-delete { 
-  background: var(--danger-color); 
-  color: white; 
+.btn-export:hover {
+  background: #fce7f3;
 }
-.btn-delete:hover { background: #b91c1c; }
+
+.btn-delete {
+  background: var(--danger-color);
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #b91c1c;
+}
 
 /* Generic Icon Action Buttons */
 .btn-icon {
@@ -195,7 +218,8 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px; /* Apple squircle vibe */
+  border-radius: 12px;
+  /* Apple squircle vibe */
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -204,54 +228,61 @@ button {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
 }
+
 .btn-icon:hover {
   background: rgba(255, 255, 255, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
+
 .btn-icon:active {
   transform: translateY(1px) scale(0.95);
 }
 
 /* Grids for lists (Mis Tests, Resultados, Seleccionar examen) */
-.card-grid { 
-  display: grid; 
+.card-grid {
+  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.25rem; 
+  gap: 1.25rem;
   margin-top: 1.5rem;
 }
 
 /* Cards used inside grids */
-.grid-card { 
-  background: var(--glass-bg); 
+.grid-card {
+  background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  padding: 1.5rem; 
-  border-radius: 20px; /* Big apple radius */
-  box-shadow: var(--glass-shadow); 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  gap: 1rem; 
-  flex-wrap: wrap; 
+  padding: 1.5rem;
+  border-radius: 20px;
+  /* Big apple radius */
+  box-shadow: var(--glass-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+
 .grid-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 40px rgba(31, 38, 135, 0.12);
 }
-.grid-card h3 { 
-  margin: 0 0 0.5rem 0; 
-  font-size: 1.1rem; 
+
+.grid-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
   color: var(--text-main);
 }
-.grid-card p, .grid-card .subtitle { 
-  margin: 0; 
-  color: var(--text-muted); 
-  font-size: 0.9rem; 
+
+.grid-card p,
+.grid-card .subtitle {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 /* =========================================================================
@@ -265,7 +296,7 @@ button {
   width: 100vw;
   height: 100vh;
   z-index: 9999;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -278,7 +309,7 @@ button {
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   border-radius: 24px;
   width: 90%;
   max-height: 80vh;
@@ -286,7 +317,7 @@ button {
   flex-direction: column;
   overflow: hidden;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .modal-small {
@@ -354,7 +385,9 @@ button {
   transition: all 0.2s;
 }
 
-.btn-cancel:hover { background: #e5e7eb; }
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
 
 .btn-confirm {
   background: var(--primary-color);
@@ -367,16 +400,24 @@ button {
   transition: all 0.2s;
 }
 
-.btn-confirm:hover:not(:disabled) { background: var(--primary-hover); }
-.btn-confirm:disabled { background: #9ca3af; cursor: not-allowed; }
+.btn-confirm:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.btn-confirm:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
 
 /* Internal inputs */
 .search-container {
   margin-bottom: 1rem;
 }
+
 .search-container.no-margin {
   margin-bottom: 0 !important;
 }
+
 .search-input {
   width: 100%;
   padding: 0.6rem 1rem;
@@ -387,8 +428,120 @@ button {
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
+
 .search-input:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
+
+/* --- Global Apple Glass Components & Buttons --- */
+.controls button {
+  @include apple-glass-button('dark');
+  flex: 1;
+}
+
+.question-card {
+  @include apple-glass('light');
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.question-card:hover {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.btn-create {
+  @include apple-glass-button('dark');
+}
+
+.btn-small {
+  @include apple-glass-button('light');
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.save-btn {
+  @include apple-glass-button('success');
+  padding: 0.6rem 1.25rem;
+}
+
+.edit-actions .delete-btn {
+  @include apple-glass-button('danger');
+  padding: 0.6rem 1.25rem;
+}
+
+.btn-exam {
+  @include apple-glass-button('success');
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-finish {
+  @include apple-glass-button('dark');
+}
+
+.btn-finish.large {
+  width: 100%;
+  margin-top: 1rem;
+  @include apple-glass-button('light');
+}
+
+.btn-select {
+  @include apple-glass-button('light');
+  padding: 0.4rem 0.8rem;
+}
+
+.modal-question-item {
+  @include apple-glass('light');
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 16px;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.modal-question-item:hover {
+  transform: translateY(-1px);
+}
+
+.modal-question-item.selectable.selected {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 4px 10px rgba(16, 185, 129, 0.1);
+}
+
+.btn-import-bulk {
+  @include apple-glass-button('success');
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-import {
+  @include apple-glass-button('light');
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+}
+
+.btn-nav {
+  @include apple-glass-button('light');
+  flex: 1;
+}
+
+.btn-nav.primary {
+  @include apple-glass-button('dark');
+  flex: 1;
+}
+
+.btn-finish-exam {
+  @include apple-glass-button('success');
+  flex: 1;
+}

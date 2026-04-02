@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QuizQuestion } from './pdf-quiz/pdf-parser.service';
+import { QuizQuestion } from './pdf-parser.service';
 
 export interface StoredQuiz {
     id: string;
