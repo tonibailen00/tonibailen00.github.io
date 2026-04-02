@@ -1,0 +1,13 @@
+@mixin liquid-glass-panel {
+  background: linear-gradient(135deg, rgb(255 255 255 / 40%) 0%, rgb(255 255 255 / 10%) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgb(255 255 255 / 40%);
+  box-shadow: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 90%);
+}
+
+@mixin liquid-glass-pill {
+  background: rgb(255 255 255 / 15%);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgb(255 255 255 / 20%);
+  box-shadow: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 60%);
+}

@@ -1,3 +1,5 @@
+@use './glass-mixins.scss' as glass;
+
 .app-container {
   display: flex;
   flex-direction: column;
@@ -25,16 +27,15 @@
   max-width: 450px;
   margin: 0 auto;
   height: 70px;
-  background: rgba(255, 255, 255, 0.08); /* Más transparente */
-  backdrop-filter: blur(3px); /* Menos blur para hacerlo más 'liquid' */
-  -webkit-backdrop-filter: blur(3px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  /* Formato glass reemplazado por utilidades globales */
+  @include glass.liquid-glass-pill;
+
   border-radius: 35px;
   /* Forma de pastilla flotante */
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   z-index: 1000;
   padding: 0 0.5rem;
 }
@@ -67,7 +68,7 @@
 
   &.active {
     color: var(--primary-color);
-    background: rgba(0, 0, 0, 0.04);
+    background: rgb(0 0 0 / 4%);
     /* Fondo destacado similar al de la imagen */
 
     .icon {

@@ -1,3 +1,5 @@
+@use '../glass-mixins.scss' as glass;
+
 .link-card {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -8,9 +10,9 @@
 }
 
 .link-card:hover .icon-btn {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgb(255 255 255 / 50%);
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 12px 40px rgb(31 38 135 / 15%), inset 0 1px 0 rgb(255 255 255 / 80%);
   color: var(--primary-color);
 }
 
@@ -42,11 +44,8 @@
 }
 
 .btn-back-icon {
-  background: rgba(255, 255, 255, 0.4); /* More glassy */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  @include glass.liquid-glass-panel;
+
   width: 44px;
   height: 44px;
   border-radius: 22px;
@@ -60,9 +59,9 @@
 }
 
 .btn-back-icon:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--glass-bg-heavy);
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+  box-shadow: 0 12px 40px rgb(31 38 135 / 15%), inset 0 1px 0 rgb(255 255 255 / 100%);
 }
 
 .btn-back-icon:active {
@@ -91,15 +90,15 @@
   flex: 0 0 auto;
   min-width: 44px;
   height: 44px;
-  box-sizing: border-box; /* fix for clipped text */
-  line-height: normal; /* fix for clipped text */
+  box-sizing: border-box;
+  /* fix for clipped text */
+  line-height: normal;
+  /* fix for clipped text */
   border-radius: 22px;
   padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.15); /* Liquid Glass */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 4px 10px rgba(31, 38, 135, 0.1);
+
+  @include glass.liquid-glass-pill;
+
   color: var(--text-main);
   font-weight: 600;
   display: flex;
@@ -110,54 +109,50 @@
 }
 
 .nav-dot:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--glass-bg-light);
   transform: translateY(-2px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 6px 16px rgba(31, 38, 135, 0.12);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 90%), 0 6px 16px rgb(31 38 135 / 12%);
 }
 
 .nav-dot.answered {
-  background: rgba(79, 70, 229, 0.15);
-  border-color: rgba(79, 70, 229, 0.3);
+  background: rgb(79 70 229 / 15%);
+  border-color: rgb(79 70 229 / 30%);
   color: var(--primary-color);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 12px rgba(79, 70, 229, 0.1);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%), 0 4px 12px rgb(79 70 229 / 10%);
 }
 
 .nav-dot.active {
   border-color: var(--primary-color);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 0 3px rgba(79, 70, 229, 0.2), 0 4px 12px rgba(79, 70, 229, 0.15);
-  background: rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 90%), 0 0 0 3px rgb(79 70 229 / 20%), 0 4px 12px rgb(79 70 229 / 15%);
+  background: rgb(255 255 255 / 60%);
   transform: scale(1.1);
 }
 
 .nav-dot.correct {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: rgba(16, 185, 129, 0.4);
+  background: rgb(16 185 129 / 15%);
+  border-color: rgb(16 185 129 / 40%);
   color: var(--success-color);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 10px rgba(16, 185, 129, 0.1);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 50%), 0 4px 10px rgb(16 185 129 / 10%);
 }
 
 .nav-dot.incorrect {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.3);
+  background: rgb(239 68 68 / 15%);
+  border-color: rgb(239 68 68 / 30%);
   color: var(--danger-color);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 10px rgba(239, 68, 68, 0.1);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 50%), 0 4px 10px rgb(239 68 68 / 10%);
 }
 
 .nav-dot.unanswered-wrong {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(0, 0, 0, 0.1);
+  background: rgb(255 255 255 / 20%);
+  border-color: rgb(0 0 0 / 10%);
   color: var(--text-muted);
   opacity: 0.6;
 }
 
 .exam-active-card {
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  @include glass.liquid-glass-panel;
   padding: 1.5rem;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .question-text {
@@ -181,34 +176,31 @@
   padding: 1rem;
   border-radius: 14px;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.4);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   font-size: 1rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .btn-nav {
-  background: rgba(255, 255, 255, 0.4);
+  @include glass.liquid-glass-panel;
   color: var(--text-main);
+  box-shadow: var(--glass-shadow-light);
 }
 
 .btn-nav:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.6);
+  background: var(--glass-bg-heavy);
   transform: translateY(-2px);
 }
 
 .btn-nav.primary {
-  background: rgba(79, 70, 229, 0.15);
-  border-color: rgba(79, 70, 229, 0.3);
+  background: rgb(79 70 229 / 15%);
+  border-color: rgb(79 70 229 / 30%);
   color: var(--primary-color);
 }
 
 .btn-nav.primary:hover:not(:disabled) {
-  background: rgba(79, 70, 229, 0.25);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 15px rgba(79, 70, 229, 0.2);
+  background: rgb(79 70 229 / 25%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 60%), 0 6px 15px rgb(79 70 229 / 20%);
 }
 
 .btn-nav:disabled {
@@ -218,14 +210,14 @@
 }
 
 .btn-finish-exam {
-  background: rgba(16, 185, 129, 0.8);
-  border-color: rgba(16, 185, 129, 0.5);
+  background: rgb(16 185 129 / 80%);
+  border-color: rgb(16 185 129 / 50%);
   color: white;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(16, 185, 129, 0.2);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%), 0 4px 10px rgb(16 185 129 / 20%);
 }
 
 .btn-finish-exam:hover {
-  background: rgba(16, 185, 129, 1);
+  background: rgb(16 185 129 / 100%);
   transform: translateY(-2px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 15px rgba(16, 185, 129, 0.3);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 40%), 0 6px 15px rgb(16 185 129 / 30%);
 }
