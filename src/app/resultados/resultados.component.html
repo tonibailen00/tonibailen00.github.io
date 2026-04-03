@@ -6,19 +6,27 @@
     </div>
   </div>
 
-  <div *ngIf="loading()" class="loading">Cargando resultados...</div>
+  @if (loading()) {
+  <div class="loading">Cargando resultados...</div>
+  }
 
-  <div *ngIf="!loading() && results().length === 0" class="glass-panel empty-state">
+  @if (!loading() && results().length === 0) {
+  <div class="glass-panel empty-state">
     <p>Aún no has hecho ningún examen.</p>
-    <button class="btn-glass btn-glass-primary btn-primary" (click)="goToExams()">Empezar examen</button>
+    <button class="btn-glass btn-glass-primary btn-primary" (click)="goToExams()">
+      Empezar examen
+    </button>
   </div>
+  }
 
-  <div class="card-grid" *ngIf="!loading() && results().length > 0">
-    <div *ngFor="let res of results()" class="grid-card glass-panel">
+  @if (!loading() && results().length > 0) {
+  <div class="card-grid">
+    @for (res of results(); track res) {
+    <div class="grid-card glass-panel">
       <div class="card-header-row">
         <div class="result-header">
           <h3>{{ res.quizTitle }}</h3>
-          <span class="date">{{ res.date | date:'short' }}</span>
+          <span class="date">{{ res.date | date: 'short' }}</span>
         </div>
         <div class="card-actions">
           <button class="icon-btn delete-btn" (click)="deleteResult(res.id)" aria-label="Eliminar resultado">
@@ -26,10 +34,9 @@
           </button>
         </div>
       </div>
-
       <div class="score-row">
         <div class="score-circle" [class.pass]="getPercentage(res) >= 50" [class.fail]="getPercentage(res) < 50">
-          {{ getPercentage(res) | number:'1.0-0' }}%
+          {{ getPercentage(res) | number: '1.0-0' }}%
         </div>
         <div class="score-details">
           <span class="correct"><i class="ph-fill ph-check-circle"></i> {{ res.correctAnswers }} correctas</span>
@@ -37,5 +44,7 @@
         </div>
       </div>
     </div>
+    }
   </div>
+  }
 </div>

@@ -12,167 +12,216 @@
       <input type="file" accept="application/pdf" (change)="onFileChange($event)" />
     </label>
 
-    <div *ngIf="loading()" class="loading">Procesando…</div>
+    @if (loading()) {
+    <div class="loading">Procesando…</div>
+    }
 
     <div class="parse-options glass-panel">
       <h4>¿Cómo está marcada la respuesta correcta en el PDF?</h4>
       <label>
-        <input type="radio" name="parseMode" value="bold" [(ngModel)]="parseMode">
+        <input type="radio" name="parseMode" value="bold" [(ngModel)]="parseMode" />
         En negrita (ej: <strong>a) Opción correcta</strong>)
       </label>
       <label>
-        <input type="radio" name="parseMode" value="explicit" [(ngModel)]="parseMode">
+        <input type="radio" name="parseMode" value="explicit" [(ngModel)]="parseMode" />
         Debajo de la pregunta (ej: "Respuesta: a)")
       </label>
       <label>
-        <input type="radio" name="parseMode" value="highlight" [(ngModel)]="parseMode">
+        <input type="radio" name="parseMode" value="highlight" [(ngModel)]="parseMode" />
         <mark class="highlight-option">Subrayada en amarillo</mark>
       </label>
     </div>
 
     <div class="controls">
-      <button class="btn-glass btn-glass-primary btn-primary" (click)="visualize()"
-        [disabled]="!file || loading()">Generar preguntas</button>
+      <button class="btn-glass btn-glass-primary btn-primary" (click)="visualize()" [disabled]="!file || loading()">
+        Generar preguntas
+      </button>
     </div>
 
     <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
 
-    <div *ngIf="visualized() && questions().length === 0 && !loading()" class="glass-panel empty-state">
+    @if (visualized() && questions().length === 0 && !loading()) {
+    <div class="glass-panel empty-state">
       <p>No se ha encontrado ninguna pregunta con el formato esperado en este PDF.</p>
-      <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el "Generar preguntas"
-        interactuando con los distintos modos disponibles.</small>
+      <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el
+        "Generar preguntas" interactuando con los distintos modos disponibles.</small>
     </div>
+    }
   </div>
 
   <div class="glass-panel content-card quiz-list">
     <div class="quiz-header">
       <div class="title-container">
-        <h3>{{ quizTitle() || 'Cuestionario' }} {{ questions().length > 0 ? '(' + questions().length + ' preguntas)' :
-          '' }}</h3>
+        <h3>
+          {{ quizTitle() || 'Cuestionario' }}
+          {{ questions().length > 0 ? '(' + questions().length + ' preguntas)' : '' }}
+        </h3>
       </div>
     </div>
-    <ol *ngIf="questions().length > 0">
-      <li *ngFor="let q of questions()" class="glass-panel question-card" #questionCard>
+    @if (questions().length > 0) {
+    <ol>
+      @for (q of questions(); track q) {
+      <li class="glass-panel question-card" #questionCard>
         <div class="question-header">
           <div class="question">{{ q.id }}. {{ q.question }}</div>
           <div class="question-actions">
-            <button class="icon-btn edit-btn" (click)="editQuestion(q)" title="Editar"><i
-                class="ph ph-pencil-simple"></i></button>
-            <button class="icon-btn delete-btn" (click)="deleteQuestion(q)" title="Eliminar"><i
-                class="ph ph-trash"></i></button>
+            <button class="icon-btn edit-btn" (click)="editQuestion(q)" title="Editar">
+              <i class="ph ph-pencil-simple"></i>
+            </button>
+            <button class="icon-btn delete-btn" (click)="deleteQuestion(q)" title="Eliminar">
+              <i class="ph ph-trash"></i>
+            </button>
           </div>
         </div>
         <ul class="options">
-          <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
-            <span *ngIf="opt.correct"><strong><i class="ph-fill ph-check-circle"
-                  style="color: var(--success-color);"></i> {{ opt.text }}</strong></span>
-            <span *ngIf="!opt.correct">{{ opt.text }}</span>
+          @for (opt of q.options; track opt) {
+          <li [class.correct]="opt.correct">
+            @if (opt.correct) {
+            <span><strong><i class="ph-fill ph-check-circle" style="color: var(--success-color)"></i>
+                {{ opt.text }}</strong></span>
+            }
+            @if (!opt.correct) {
+            <span>{{ opt.text }}</span>
+            }
           </li>
+          }
         </ul>
-
       </li>
+      }
     </ol>
+    }
   </div>
 
-  <div class="modal-overlay" *ngIf="showEditModal() && editingQuestion() as eq">
+  @if (showEditModal() && editingQuestion(); as eq) {
+  <div class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
         <h3>{{ isCreatingNew() ? 'Nueva Pregunta' : 'Editar Pregunta ' + eq.id }}</h3>
         <button class="btn-close" (click)="cancelEditModal()"><i class="ph ph-x"></i></button>
       </div>
-
       <div class="modal-body">
-        <div class="edit-mode" style="margin-top:0; border:none; padding:0; box-shadow:none; background:transparent;">
+        <div class="edit-mode" style="
+              margin-top: 0;
+              border: none;
+              padding: 0;
+              box-shadow: none;
+              background: transparent;
+            ">
           <div class="form-group row">
-            <input type="number" [(ngModel)]="eq.id" class="id-input" placeholder="Nº">
+            <input type="number" [(ngModel)]="eq.id" class="id-input" placeholder="Nº" />
             <textarea [(ngModel)]="eq.question" class="question-input" rows="3"
               placeholder="Escribe la pregunta..."></textarea>
           </div>
-
           <div class="options-edit">
             <h4>Opciones:</h4>
-            <div *ngFor="let opt of eq.options; let i = index" class="option-edit-row">
-              <input type="checkbox" [(ngModel)]="opt.correct" title="¿Opción correcta?">
-              <input type="text" [(ngModel)]="opt.text" class="option-input" placeholder="Texto de la opción">
-              <button class="icon-btn delete-btn" (click)="removeOption(eq, i)" title="Quitar opción"><i
-                  class="ph ph-x"></i></button>
+            @for (opt of eq.options; track opt; let i = $index) {
+            <div class="option-edit-row">
+              <input type="checkbox" [(ngModel)]="opt.correct" title="¿Opción correcta?" />
+              <input type="text" [(ngModel)]="opt.text" class="option-input" placeholder="Texto de la opción" />
+              <button class="icon-btn delete-btn" (click)="removeOption(eq, i)" title="Quitar opción">
+                <i class="ph ph-x"></i>
+              </button>
             </div>
-            <button class="btn-glass btn-glass-primary btn-primary btn-small mt-2" (click)="addOption(eq)"><i
-                class="ph ph-plus"></i> Añadir Opción</button>
+            }
+            <button class="btn-glass btn-glass-primary btn-primary btn-small mt-2" (click)="addOption(eq)">
+              <i class="ph ph-plus"></i> Añadir Opción
+            </button>
           </div>
         </div>
       </div>
-
       <div class="modal-footer action-footer">
         <button class="btn-cancel" (click)="cancelEditModal()">Cancelar</button>
         <button class="btn-confirm" (click)="saveEditModal()">Guardar</button>
       </div>
     </div>
   </div>
+  }
 
-  <div class="modal-overlay" *ngIf="showImportModal()">
+  @if (showImportModal()) {
+  <div class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 *ngIf="!selectedQuizToImport()">Selecciona un cuestionario</h3>
-        <h3 *ngIf="selectedQuizToImport()">
-          <button class="btn-glass btn-glass-light btn-small" (click)="selectedQuizToImport.set(null)"><i
-              class="ph ph-arrow-left"></i>
-            Volver</button>
+        @if (!selectedQuizToImport()) {
+        <h3>Selecciona un cuestionario</h3>
+        }
+        @if (selectedQuizToImport()) {
+        <h3>
+          <button class="btn-glass btn-glass-light btn-small" (click)="selectedQuizToImport.set(null)">
+            <i class="ph ph-arrow-left"></i> Volver
+          </button>
           Preguntas de: {{ selectedQuizToImport()?.title }}
         </h3>
+        }
         <button class="btn-close" (click)="closeImportModal()"><i class="ph ph-x"></i></button>
       </div>
-
       <div class="modal-body">
         <div class="search-container">
           <input type="text" class="search-input" placeholder="Buscar..." [value]="searchQuery()"
-            (input)="updateSearch($event)">
+            (input)="updateSearch($event)" />
         </div>
-
-        <div *ngIf="!selectedQuizToImport()" class="modal-list">
-          <div *ngIf="filteredQuizzes().length === 0" class="glass-panel empty-state">
+        @if (!selectedQuizToImport()) {
+        <div class="modal-list">
+          @if (filteredQuizzes().length === 0) {
+          <div class="glass-panel empty-state">
             <p>No se encontraron resultados.</p>
           </div>
-          <div *ngFor="let quiz of filteredQuizzes()" class="modal-list-item" (click)="selectQuizForImport(quiz)">
+          }
+          @for (quiz of filteredQuizzes(); track quiz) {
+          <div class="modal-list-item" (click)="selectQuizForImport(quiz)">
             <div>
               <strong>{{ quiz.title }}</strong>
               <div class="small-text">{{ quiz.questions.length }} preguntas</div>
             </div>
             <button class="btn-glass btn-glass-primary btn-primary btn-small">▶️ Ver</button>
           </div>
+          }
         </div>
-
-        <div *ngIf="selectedQuizToImport()" class="modal-list">
-          <div *ngIf="filteredQuestions().length === 0" class="glass-panel empty-state">
+        }
+        @if (selectedQuizToImport()) {
+        <div class="modal-list">
+          @if (filteredQuestions().length === 0) {
+          <div class="glass-panel empty-state">
             <p>No se encontraron preguntas.</p>
           </div>
-          <div *ngFor="let q of filteredQuestions(); let i = index" class="glass-panel modal-question-item selectable"
-            (click)="toggleQuestionSelection(q.id)" [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
+          }
+          @for (q of filteredQuestions(); track q; let i = $index) {
+          <div class="glass-panel modal-question-item selectable" (click)="toggleQuestionSelection(q.id)"
+            [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
             <input type="checkbox" [checked]="selectedQuestionIdsToImport().includes(q.id)"
-              (click)="$event.stopPropagation()" (change)="toggleQuestionSelection(q.id)">
-            <div class="q-text"><strong>{{ i + 1 }}.</strong> {{ q.question }}</div>
+              (click)="$event.stopPropagation()" (change)="toggleQuestionSelection(q.id)" />
+            <div class="q-text">
+              <strong>{{ i + 1 }}.</strong> {{ q.question }}
+            </div>
           </div>
+          }
         </div>
+        }
       </div>
-
-      <div class="modal-footer" *ngIf="selectedQuizToImport()">
+      @if (selectedQuizToImport()) {
+      <div class="modal-footer">
         <button class="btn-glass btn-glass-success btn-import-bulk"
           [disabled]="selectedQuestionIdsToImport().length === 0" (click)="importSelectedQuestions()">
           Importar seleccionadas ({{ selectedQuestionIdsToImport().length }})
         </button>
       </div>
+      }
     </div>
   </div>
+  }
 
   <div class="fab-group">
-    <button class="fab-item fab-small" *ngIf="hasSavedQuizzes()" (click)="openImportModal()" title="Importar preguntas">
+    @if (hasSavedQuizzes()) {
+    <button class="fab-item fab-small" (click)="openImportModal()" title="Importar preguntas">
       <i class="ph-bold ph-download-simple"></i>
     </button>
+    }
     <button class="fab-item fab-small" (click)="addNewQuestion()" title="Añadir pregunta desde cero">
       <i class="ph-bold ph-plus"></i>
     </button>
-    <button class="fab-item fab-main" *ngIf="questions().length > 0" (click)="openSaveModal()" title="Guardar examen">
+    @if (questions().length > 0) {
+    <button class="fab-item fab-main" (click)="openSaveModal()" title="Guardar examen">
       <i class="ph-bold ph-floppy-disk"></i>
     </button>
+    }
   </div>
 </div>

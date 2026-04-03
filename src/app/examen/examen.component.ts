@@ -1,5 +1,5 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { DOCUMENT, DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { StorageService, StoredQuiz } from '../services/storage.service';
 import { UiService } from '../services/ui.service';
@@ -8,7 +8,7 @@ import { NavigationService } from '../services/navigation.service';
 @Component({
     selector: 'app-examen',
     standalone: true,
-    imports: [CommonModule],
+    imports: [DatePipe],
     templateUrl: './examen.component.html',
     styleUrls: ['./examen.component.scss', '../../styles.scss']
 })

@@ -1,5 +1,5 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { StorageService, StoredQuiz } from '../services/storage.service';
 import { FileService } from '../services/file.service';
 import { NavigationService } from '../services/navigation.service';
@@ -8,7 +8,7 @@ import { UiService } from '../services/ui.service';
 @Component({
     selector: 'app-cuestionarios',
     standalone: true,
-    imports: [CommonModule],
+    imports: [DatePipe],
     templateUrl: './cuestionarios.component.html',
     styleUrls: ['./cuestionarios.component.scss', '../../styles.scss']
 })

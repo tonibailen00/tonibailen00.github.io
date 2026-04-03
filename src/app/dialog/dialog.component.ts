@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { UiService } from '../services/ui.service';
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss', '../../styles.scss']
+  styleUrls: ['./dialog.component.scss', '../../styles.scss'],
 })
 export class DialogComponent {
   ui = inject(UiService);
@@ -33,4 +33,3 @@ export class DialogComponent {
     this.ui.clearDialog();
   }
 }
-

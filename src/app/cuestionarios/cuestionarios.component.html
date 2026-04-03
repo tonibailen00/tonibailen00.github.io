@@ -12,15 +12,17 @@
     </div>
   </div>
 
-  <div *ngIf="loading()" class="loading">Cargando...</div>
-
-  <div *ngIf="!loading() && quizzes().length === 0" class="glass-panel empty-state">
+  @if (loading()) {
+  <div class="loading">Cargando...</div>
+  } @else if (quizzes().length === 0) {
+  <div class="glass-panel empty-state">
     <p>No tienes ningún cuestionario guardado.</p>
     <button class="btn-glass btn-glass-primary btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
   </div>
-
+  } @else {
   <div class="card-grid">
-    <div *ngFor="let quiz of quizzes()" class="grid-card glass-panel">
+    @for (quiz of quizzes(); track quiz.id) {
+    <div class="grid-card glass-panel">
       <div class="card-header-row">
         <div class="quiz-info">
           <h3>{{ quiz.title }}</h3>
@@ -36,5 +38,7 @@
         </div>
       </div>
     </div>
+    }
   </div>
+  }
 </div>

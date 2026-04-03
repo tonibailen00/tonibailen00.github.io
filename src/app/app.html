@@ -1,11 +1,12 @@
 <main class="app-container">
   <app-dialog></app-dialog>
 
-  <div class="content-router" [ngClass]="{'no-bottom-nav': ui.isExamMode()}">
+  <div class="content-router" [ngClass]="{ 'no-bottom-nav': ui.isExamMode() }">
     <router-outlet />
   </div>
 
-  <nav class="bottom-nav glass-pill" *ngIf="!ui.isExamMode()">
+  @if (!ui.isExamMode()) {
+  <nav class="bottom-nav glass-pill">
     <a routerLink="/crear" routerLinkActive="active" class="nav-item">
       <span class="icon ph ph-plus-circle"></span>
       <span class="label">Crear</span>
@@ -23,4 +24,5 @@
       <span class="label">Resultados</span>
     </a>
   </nav>
+  }
 </main>

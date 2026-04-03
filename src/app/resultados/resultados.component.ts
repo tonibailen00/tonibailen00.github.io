@@ -1,5 +1,5 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { StorageService, ExamResult } from '../services/storage.service';
 import { NavigationService } from '../services/navigation.service';
 import { UiService } from '../services/ui.service';
@@ -7,7 +7,7 @@ import { UiService } from '../services/ui.service';
 @Component({
   selector: 'app-resultados',
   standalone: true,
-  imports: [CommonModule],
+  imports: [DatePipe, DecimalPipe],
   templateUrl: './resultados.component.html',
   styleUrls: ['./resultados.component.scss']
 })

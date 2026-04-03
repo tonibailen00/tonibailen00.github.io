@@ -39,12 +39,36 @@
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  position: relative;
+  overflow: hidden;
+
+  /* Efecto de brillo de vidrio dinámico a través de un pseudo-elemento */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: translateX(-150%) skewX(-25deg);
+    mix-blend-mode: overlay;
+    transition: none;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  &:hover::before:not(:disabled) {
+    opacity: 1;
+    animation: glass-shine 0.8s ease-in-out forwards;
+  }
 
   border: 1px solid transparent;
   font-family: inherit;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Curva de transición elástica (Liquid Spring) */
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -53,12 +77,13 @@
   background: var(--btn-bg, var(--glass-bg-light));
   color: var(--btn-text, var(--text-main));
   text-shadow: none;
-  box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-light);
+  box-shadow: inset 0 0.5px 1px var(--glass-border),
+  var(--btn-shadow, var(--glass-shadow-light));
 
   &:hover:not(:disabled) {
     background: var(--btn-bg-hover, var(--glass-surface-active));
     transform: translateY(-2px);
-    box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-heavy);
+    box-shadow: inset 0 0.5px 1px var(--glass-border), var(--btn-shadow-hover, var(--glass-shadow-heavy));
   }
 
   &:active {
@@ -83,6 +108,8 @@
   --btn-text: #fff;
   --btn-border: var(--primary-border);
   --btn-bg-hover: var(--primary-glass-hover);
+  --btn-shadow: 0 8px 24px var(--primary-glass-transparent);
+  --btn-shadow-hover: 0 12px 32px var(--primary-glass-transparent);
 }
 
 .btn-glass-success {
@@ -90,6 +117,8 @@
   --btn-text: #fff;
   --btn-border: var(--success-glass);
   --btn-bg-hover: var(--success-glass-hover);
+  --btn-shadow: 0 8px 24px var(--success-glass-transparent);
+  --btn-shadow-hover: 0 12px 32px var(--success-glass-transparent);
 }
 
 .btn-glass-danger {
@@ -97,6 +126,8 @@
   --btn-text: #fff;
   --btn-border: var(--danger-glass);
   --btn-bg-hover: var(--danger-glass-hover);
+  --btn-shadow: 0 8px 24px var(--danger-glass-transparent);
+  --btn-shadow-hover: 0 12px 32px var(--danger-glass-transparent);
 }
 
 .btn-glass-light {
@@ -111,6 +142,11 @@
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
+}
+
+html,
+:root {
+  background-color: var(--bg-fallback);
 }
 
 body {
@@ -222,7 +258,7 @@ button {
   color: var(--text-main);
   cursor: pointer;
   font-size: 1.1rem;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   width: 44px;
   height: 44px;
   padding: 0;
@@ -235,13 +271,14 @@ button {
 
 .icon-btn:hover {
   background: var(--glass-surface-hover);
-  transform: translateY(-4px) scale(1.05);
+  transform: translateY(-4px) scale(1.08);
+  /* Ligeramente más elástico */
   box-shadow: var(--glass-shadow-heavy);
   color: var(--text-main);
 }
 
 .icon-btn:active {
-  transform: translateY(1px) scale(0.95);
+  transform: translateY(2px) scale(0.92);
 }
 
 .fab-group {
@@ -298,6 +335,12 @@ button {
   color: var(--primary-color);
   text-shadow: none;
 
+  /* Sombra coloreada (Glow) que da profundidad al botón flotante */
+  box-shadow: 0 8px 24px var(--primary-glass-transparent);
+
+  /* Animamos sutilmente su borde para hacer el efecto de burbuja / líquido */
+  animation: liquid-morph 8s ease-in-out infinite alternate;
+
   .text {
     font-weight: 700;
     font-size: 1rem;
@@ -307,7 +350,7 @@ button {
   &:hover {
     background: var(--primary-glass);
     color: #fff;
-    background: var(--primary-glass);
+    box-shadow: 0 12px 32px var(--primary-glass-transparent);
   }
 }
 
@@ -326,7 +369,7 @@ button {
   justify-content: flex-start;
   align-items: stretch;
   gap: 1rem;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .card-header-row {
@@ -384,6 +427,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: fadeInOverlay 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 
   @supports not (backdrop-filter: blur(10px)) {
     background: rgba(0, 0, 0, 0.5);
@@ -402,6 +446,7 @@ button {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: popInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards;
 
   @supports not (backdrop-filter: blur(10px)) {
     background: var(--bg-fallback);
@@ -806,5 +851,116 @@ input[type="radio"]:checked::after {
       margin-left: auto;
       font-size: 1.25rem;
     }
+  }
+}
+
+/* =========================================================================
+   ANIMACIONES Y TRANSICIONES (Estilo iOS / Liquid Glass)
+   ========================================================================= */
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popInModal {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efecto Cascada (Stagger) para las tarjetas en grid */
+.grid-card:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.grid-card:nth-child(2) {
+  animation-delay: 0.10s;
+}
+
+.grid-card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.grid-card:nth-child(4) {
+  animation-delay: 0.20s;
+}
+
+.grid-card:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.grid-card:nth-child(n+6) {
+  animation-delay: 0.30s;
+}
+
+/* View Transitions para Enrutado */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: -ua-view-transition-fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: -ua-view-transition-fade-in;
+}
+
+/* Animaciones para la API nativa de Angular 21 (animate.enter / animate.leave) */
+.list-enter {
+  animation: staggerPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.list-leave {
+  animation: staggerFadeOut 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes staggerPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes staggerFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
   }
 }
