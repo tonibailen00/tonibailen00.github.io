@@ -1,6 +1,8 @@
 <div class="page-container">
   @if (loading()) {
-  <div class="loading">Cargando...</div>
+  <div class="liquid-loader-container">
+    <div class="liquid-loader"></div>
+  </div>
   }
 
   @if (!loading() && !quiz()) {
