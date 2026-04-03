@@ -1,4 +1,4 @@
-﻿@use '../glass-mixins.scss' as glass;
+﻿
 
 .actions-main {
     display: flex;
@@ -7,7 +7,6 @@
 
 .parse-options {
     margin-top: 1.5rem;
-    @include glass.liquid-glass-panel;
     padding: 1.5rem;
     border-radius: 20px;
 

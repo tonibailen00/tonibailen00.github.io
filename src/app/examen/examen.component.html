@@ -16,7 +16,7 @@
     </div>
 
     <div class="card-grid">
-      <div *ngFor="let q of quizzes()" class="grid-card link-card" (click)="startExam(q.id)">
+      <div *ngFor="let q of quizzes()" class="grid-card glass-panel link-card" (click)="startExam(q.id)">
         <div class="card-header-row align-center">
           <div class="quiz-info">
             <h3>{{ q.title }}</h3>
@@ -33,13 +33,13 @@
   <ng-container *ngIf="quiz() as qz">
     <div class="exam-view-container">
       <div class="exam-header-nav">
-        <button class="btn-back-icon" (click)="requestExit()"><i class="ph-bold ph-arrow-left"></i></button>
+        <button class="btn-back-icon glass-panel" (click)="requestExit()"><i class="ph-bold ph-arrow-left"></i></button>
         <h2 class="truncate">{{ qz.title }}</h2>
         <span class="progress-text">{{ currentQuestionIndex() + 1 }} / {{ qz.questions.length }}</span>
       </div>
 
       <div class="dots-scroll">
-        <button *ngFor="let q of qz.questions; let i = index" class="nav-dot"
+        <button *ngFor="let q of qz.questions; let i = index" class="nav-dot glass-pill"
           [class.active]="i === currentQuestionIndex()"
           [class.answered]="userAnswers()[q.id] !== undefined && !examFinished()"
           [class.correct]="examFinished() && isCorrect(q.id, qz)"
@@ -54,7 +54,7 @@
         <p>Porcentaje: {{ ((score()!.correct / score()!.total) * 100).toFixed(1) }}%</p>
       </div>
 
-      <div class="exam-active-card" *ngIf="qz.questions[currentQuestionIndex()] as currentQ">
+      <div class="exam-active-card glass-panel" *ngIf="qz.questions[currentQuestionIndex()] as currentQ">
         <div class="question-text">{{ currentQuestionIndex() + 1 }}. {{ currentQ.question }}</div>
 
         <div class="exam-options">
@@ -78,11 +78,11 @@
       </div>
 
       <div class="exam-footer-nav">
-        <button class="btn-nav" [disabled]="currentQuestionIndex() === 0"
+        <button class="btn-nav glass-panel" [disabled]="currentQuestionIndex() === 0"
           (click)="goToQuestion(currentQuestionIndex() - 1)">Anterior</button>
-        <button *ngIf="currentQuestionIndex() < qz.questions.length - 1" class="btn-nav primary"
+        <button *ngIf="currentQuestionIndex() < qz.questions.length - 1" class="btn-nav glass-panel primary"
           (click)="goToQuestion(currentQuestionIndex() + 1)">Siguiente</button>
-        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && !examFinished()" class="btn-finish-exam"
+        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && !examFinished()" class="btn-finish-exam glass-panel"
           (click)="finishExam(qz)">🏁 Finalizar</button>
         <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && examFinished()" class="btn-finish-exam"
           (click)="requestExit()">Volver a test</button>

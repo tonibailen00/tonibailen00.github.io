@@ -42,18 +42,18 @@
   /* Borders */
   --glass-border: rgb(255 255 255 / 40%);
   --glass-border-light: rgb(255 255 255 / 20%);
-  --border-color: rgba(0, 0, 0, 0.1);
+  --border-color: rgb(0 0 0 / 10%);
 
-  /* Shadows */
+  /* Shadows (Mejoradas con brillo superior izquierdo 3D) */
   --glass-shadow: 0 8px 32px 0 rgb(31 38 135 / 7%);
-  --glass-shadow-heavy: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 90%), inset 0 -1px 0 rgb(0 0 0 / 5%);
-  --glass-shadow-light: 0 4px 10px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 70%), inset 0 -1px 0 rgb(0 0 0 / 5%);
+  --glass-shadow-heavy: 0 10px 30px rgb(31 38 135 / 10%), inset 1px 1px 0px 0px var(--glass-border), inset 0 1px 0 rgb(255 255 255 / 90%), inset -1px -1px 0px 0px rgb(0 0 0 / 5%);
+  --glass-shadow-light: 0 4px 10px rgb(31 38 135 / 10%), inset 1px 1px 0px 0px var(--glass-border-light), inset 0 1px 0 rgb(255 255 255 / 70%), inset -1px -1px 0px 0px rgb(0 0 0 / 5%);
   --textShadow: 0 1px 2px rgb(255 255 255 / 60%);
 
-  /* Blurs */
-  --glass-blur-sm: blur(4px);
-  --glass-blur-md: blur(12px);
-  --glass-blur-lg: blur(20px);
+  /* Blurs (Mejorados con saturación estilo Liquid Glass) */
+  --glass-blur-sm: blur(4px) saturate(140%);
+  --glass-blur-md: blur(12px) saturate(180%);
+  --glass-blur-lg: blur(20px) saturate(200%);
 
   /* Typography */
   --text-main: #1d1d1f;
@@ -75,7 +75,7 @@
     --primary-border: rgb(255 255 255 / 15%);
 
     /* Glass Backgrounds */
-    --glass-bg-gradient: linear-gradient(135deg, rgb(25 25 30 / 60%) 0%, rgb(10 10 15 / 40%) 100%);
+    --glass-bg-gradient: linear-gradient(135deg, rgb(255 255 255 / 5%) 0%, rgb(0 0 0 / 20%) 100%);
     --glass-bg-light: rgb(0 0 0 / 40%);
     --glass-bg-heavy: rgb(0 0 0 / 70%);
     --glass-bg-transparent: rgb(0 0 0 / 25%);
@@ -98,11 +98,11 @@
     /* Borders */
     --glass-border: rgb(255 255 255 / 15%);
     --glass-border-light: rgb(255 255 255 / 8%);
-    --border-color: rgba(255, 255, 255, 0.1);
+    --border-color: rgb(255 255 255 / 10%);
 
-    /* Shadows (Darker drop shadow, subtler inset light) */
-    --glass-shadow-heavy: 0 10px 30px rgb(0 0 0 / 50%), inset 0 1px 0 rgb(255 255 255 / 15%), inset 0 -1px 0 rgb(0 0 0 / 20%);
-    --glass-shadow-light: 0 4px 10px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 10%), inset 0 -1px 0 rgb(0 0 0 / 20%);
+    /* Shadows (Darker drop shadow, subtler inset light 3D) */
+    --glass-shadow-heavy: 0 10px 30px rgb(0 0 0 / 50%), inset 1px 1px 0px 0px var(--glass-border), inset 0 1px 0 rgb(255 255 255 / 15%), inset -1px -1px 0px 0px rgb(0 0 0 / 20%);
+    --glass-shadow-light: 0 4px 10px rgb(0 0 0 / 30%), inset 1px 1px 0px 0px var(--glass-border-light), inset 0 1px 0 rgb(255 255 255 / 10%), inset -1px -1px 0px 0px rgb(0 0 0 / 20%);
     --textShadow: 0 1px 2px rgb(0 0 0 / 80%);
 
     /* Typography */

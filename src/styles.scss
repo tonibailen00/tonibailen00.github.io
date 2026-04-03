@@ -3,27 +3,21 @@
 @use './theme.scss';
 
 /* =========================================================================    
-   MIXINS GLOBAL (Apple Glass)
+   UTILITIES GLOBAL (Apple Glass variables-driven)
    ========================================================================= */
-@mixin apple-glass($theme: 'light') {
+%apple-glass-panel {
+  -webkit-backdrop-filter: var(--glass-blur-md);
   backdrop-filter: var(--glass-blur-md);
   border-radius: 12px;
-
-  @if $theme =='light' {
-    background: var(--glass-bg-light);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow-light);
-  }
-
-  @else if $theme =='dark' {
-    background: var(--glass-bg-heavy);
-    border: 1px solid var(--glass-border-light);
-    box-shadow: var(--glass-shadow-heavy);
-    color: #fff;
-  }
+  background: var(--glass-bg-light);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-light);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-@mixin apple-glass-button($theme: 'light') {
+.btn-glass {
   border: none;
   font-family: inherit;
   font-weight: 600;
@@ -35,52 +29,18 @@
   border-radius: 12px;
   box-shadow: var(--glass-shadow-light);
 
-  @if $theme =='light' {
-    background: var(--glass-bg-light);
-    color: var(--text-main);
-    border: 1px solid var(--glass-border);
+  background: var(--btn-bg, var(--glass-bg-light));
+  color: var(--btn-text, var(--text-main));
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-light);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 
-    &:hover:not(:disabled) {
-      background: var(--glass-surface-active);
-      transform: translateY(-2px);
-      box-shadow: var(--glass-shadow-heavy);
-    }
-  }
-
-  @else if $theme =='dark' {
-    background: var(--primary-glass);
-    color: #fff;
-    border: 1px solid var(--primary-border);
-
-    &:hover:not(:disabled) {
-      background: var(--primary-glass-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--glass-shadow-heavy);
-    }
-  }
-
-  @else if $theme =='success' {
-    background: var(--success-glass);
-    border: 1px solid var(--success-glass);
-    color: #fff;
-
-    &:hover:not(:disabled) {
-      background: var(--success-glass-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--glass-shadow-heavy);
-    }
-  }
-
-  @else if $theme =='danger' {
-    background: var(--danger-glass);
-    border: 1px solid var(--danger-glass);
-    color: #fff;
-
-    &:hover:not(:disabled) {
-      background: var(--danger-glass-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--glass-shadow-heavy);
-    }
+  &:hover:not(:disabled) {
+    background: var(--btn-bg-hover, var(--glass-surface-active));
+    transform: translateY(-2px);
+    box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-heavy);
   }
 
   &:active {
@@ -88,12 +48,40 @@
   }
 
   &:disabled {
-    background: var(--disabled-glass);
-    border: 1px solid var(--disabled-border);
-    color: var(--text-muted);
+    background: var(--disabled-glass) !important;
+    border: 1px solid var(--disabled-border) !important;
+    color: var(--text-muted) !important;
     cursor: not-allowed;
-    box-shadow: none;
+    box-shadow: none !important;
   }
+}
+
+.btn-glass-primary {
+  --btn-bg: var(--primary-glass);
+  --btn-text: #fff;
+  --btn-border: var(--primary-border);
+  --btn-bg-hover: var(--primary-glass-hover);
+}
+
+.btn-glass-success {
+  --btn-bg: var(--success-glass);
+  --btn-text: #fff;
+  --btn-border: var(--success-glass);
+  --btn-bg-hover: var(--success-glass-hover);
+}
+
+.btn-glass-danger {
+  --btn-bg: var(--danger-glass);
+  --btn-text: #fff;
+  --btn-border: var(--danger-glass);
+  --btn-bg-hover: var(--danger-glass-hover);
+}
+
+.btn-glass-light {
+  --btn-bg: var(--glass-bg-light);
+  --btn-text: var(--text-main);
+  --btn-border: var(--glass-border);
+  --btn-bg-hover: var(--glass-surface-active);
 }
 
 /* Utils for liquid glass */
@@ -140,7 +128,7 @@ button {
 
 /* Base style for forms and large card blocks */
 .content-card {
-  @include glass.liquid-glass-panel;
+  @extend .glass-panel;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   border-radius: 20px;
@@ -193,7 +181,7 @@ button {
   padding: 3rem 1rem;
   margin-top: 2rem;
   border-radius: 20px;
-  @include glass.liquid-glass-panel;
+  @extend .glass-panel;
 }
 
 .empty-state p {
@@ -203,31 +191,15 @@ button {
 
 /* Buttons */
 .btn-primary {
-  background: var(--primary-glass);
-  /* Liquid glass primary tint */
-  color: #fff;
+  @extend .btn-glass;
+  @extend .btn-glass-primary;
   padding: 0.75rem 1.5rem;
-  border: 1px solid var(--primary-border);
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-  box-shadow: var(--glass-shadow-light);
-}
-
-.btn-primary:hover {
-  background: var(--primary-glass-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--glass-shadow-heavy);
-}
-
-.btn-primary:active {
-  transform: translateY(1px) scale(0.98);
 }
 
 .btn-import {
   display: inline-block;
   background: var(--glass-surface);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: 0.5rem 1rem;
   border-radius: 12px;
@@ -248,6 +220,7 @@ button {
   background: var(--glass-bg-transparent);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(5px);
+  color: var(--text-main);
   cursor: pointer;
   font-size: 1.1rem;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -352,7 +325,6 @@ button {
 
 /* Cards used inside grids */
 .grid-card {
-  @include glass.liquid-glass-panel;
   padding: 1.5rem;
   border-radius: 20px;
   /* Big apple radius */
@@ -682,7 +654,7 @@ input[type="radio"]:checked::after {
 }
 
 .question-card {
-  @include apple-glass('light');
+  @extend %apple-glass-panel;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -693,11 +665,13 @@ input[type="radio"]:checked::after {
 }
 
 .btn-create {
-  @include apple-glass-button('dark');
+  @extend .btn-glass;
+  @extend .btn-glass-primary;
 }
 
 .btn-small {
-  @include apple-glass-button('light');
+  @extend .btn-glass;
+  @extend .btn-glass-light;
   padding: 0.4rem 0.85rem;
   font-size: 0.85rem;
   display: inline-flex;
@@ -706,37 +680,43 @@ input[type="radio"]:checked::after {
 }
 
 .save-btn {
-  @include apple-glass-button('success');
+  @extend .btn-glass;
+  @extend .btn-glass-success;
   padding: 0.6rem 1.25rem;
 }
 
 .edit-actions .delete-btn {
-  @include apple-glass-button('danger');
+  @extend .btn-glass;
+  @extend .btn-glass-danger;
   padding: 0.6rem 1.25rem;
 }
 
 .btn-exam {
-  @include apple-glass-button('success');
+  @extend .btn-glass;
+  @extend .btn-glass-success;
   padding: 0.5rem 1.25rem;
 }
 
 .btn-finish {
-  @include apple-glass-button('dark');
+  @extend .btn-glass;
+  @extend .btn-glass-primary;
 }
 
 .btn-finish.large {
   width: 100%;
   margin-top: 1rem;
-  @include apple-glass-button('light');
+  @extend .btn-glass;
+  @extend .btn-glass-light;
 }
 
 .btn-select {
-  @include apple-glass-button('light');
+  @extend .btn-glass;
+  @extend .btn-glass-light;
   padding: 0.4rem 0.8rem;
 }
 
 .modal-question-item {
-  @include apple-glass('light');
+  @extend %apple-glass-panel;
   padding: 0.75rem;
   margin-bottom: 0.5rem;
   display: flex;
@@ -760,29 +740,34 @@ input[type="radio"]:checked::after {
 }
 
 .btn-import-bulk {
-  @include apple-glass-button('success');
+  @extend .btn-glass;
+  @extend .btn-glass-success;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
 }
 
 .btn-import {
-  @include apple-glass-button('light');
+  @extend .btn-glass;
+  @extend .btn-glass-light;
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;
 }
 
 .btn-nav {
-  @include apple-glass-button('light');
+  @extend .btn-glass;
+  @extend .btn-glass-light;
   flex: 1;
 }
 
 .btn-nav.primary {
-  @include apple-glass-button('dark');
+  @extend .btn-glass;
+  @extend .btn-glass-primary;
   flex: 1;
 }
 
 .btn-finish-exam {
-  @include apple-glass-button('success');
+  @extend .btn-glass;
+  @extend .btn-glass-success;
   flex: 1;
 }
 

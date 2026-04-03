@@ -1,4 +1,4 @@
-@use '../glass-mixins.scss' as glass;
+
 
 .link-card {
   cursor: pointer;
@@ -44,8 +44,6 @@
 }
 
 .btn-back-icon {
-  @include glass.liquid-glass-panel;
-
   width: 44px;
   height: 44px;
   border-radius: 22px;
@@ -96,8 +94,6 @@
   /* fix for clipped text */
   border-radius: 22px;
   padding: 0 12px;
-
-  @include glass.liquid-glass-pill;
 
   color: var(--text-main);
   font-weight: 600;
@@ -150,9 +146,7 @@
 }
 
 .exam-active-card {
-  @include glass.liquid-glass-panel;
   padding: 1.5rem;
-  border-radius: 20px;
 }
 
 .question-text {
@@ -182,8 +176,6 @@
 }
 
 .btn-nav {
-  @include glass.liquid-glass-panel;
-  color: var(--text-main);
   box-shadow: var(--glass-shadow-light);
 }
 
