@@ -20,6 +20,7 @@ export interface DialogState {
 export class UiService {
     isExamMode = signal(false);
     dialogState = signal<DialogState | null>(null);
+    isClosing = signal(false);
 
     /** Muestra una alerta simple */
     alert(message: string, title = 'Aviso', icon = 'ph-bold ph-warning', confirmText = 'Aceptar'): Promise<void> {
@@ -56,9 +57,13 @@ export class UiService {
         });
     }
 
-    /** Cierra el diálogo actual */
+    /** Cierra el diálogo actual con animación */
     clearDialog() {
-        this.dialogState.set(null);
+        this.isClosing.set(true);
+        setTimeout(() => {
+            this.dialogState.set(null);
+            this.isClosing.set(false);
+        }, 300); // 300ms coincides with the exit animation duration
     }
 
     /**

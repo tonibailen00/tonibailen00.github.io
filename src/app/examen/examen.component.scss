@@ -32,6 +32,7 @@
   margin: 0;
   flex: 1;
   font-size: 1.2rem;
+  view-transition-name: page-title;
 }
 
 .truncate {
@@ -117,6 +118,7 @@
   box-shadow: var(--glass-shadow-heavy);
   background: var(--glass-surface-active);
   transform: scale(1.1);
+  animation: liquid-morph 4s ease-in-out infinite alternate;
 }
 
 .nav-dot.correct {

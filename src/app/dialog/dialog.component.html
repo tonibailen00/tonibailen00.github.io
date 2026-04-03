@@ -1,5 +1,5 @@
 @if (ui.dialogState(); as state) {
-<div class="modal-overlay">
+<div class="modal-overlay" [class.closing]="ui.isClosing()">
   <div class="modal-content modal-small">
     <div class="modal-header">
       <h3>

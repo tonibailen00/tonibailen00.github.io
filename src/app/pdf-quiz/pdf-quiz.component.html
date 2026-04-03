@@ -93,7 +93,7 @@
   </div>
 
   @if (showEditModal() && editingQuestion(); as eq) {
-  <div class="modal-overlay">
+  <div class="modal-overlay" [class.closing]="isClosingModal()">
     <div class="modal-content">
       <div class="modal-header">
         <h3>{{ isCreatingNew() ? 'Nueva Pregunta' : 'Editar Pregunta ' + eq.id }}</h3>
@@ -138,7 +138,7 @@
   }
 
   @if (showImportModal()) {
-  <div class="modal-overlay">
+  <div class="modal-overlay" [class.closing]="isClosingModal()">
     <div class="modal-content">
       <div class="modal-header">
         @if (!selectedQuizToImport()) {

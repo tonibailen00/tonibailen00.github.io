@@ -41,6 +41,7 @@ export class PdfQuizComponent implements OnInit {
   visualized = signal(false);
   showEditModal = signal(false);
   editingQuestion = signal<QuizQuestion | null>(null);
+  isClosingModal = signal(false);
   isCreatingNew = signal(false);
   showImportModal = signal(false);
   savedQuizzes = signal<StoredQuiz[]>([]);
@@ -145,8 +146,12 @@ export class PdfQuizComponent implements OnInit {
   }
 
   closeEditModal() {
-    this.showEditModal.set(false);
-    this.editingQuestion.set(null);
+    this.isClosingModal.set(true);
+    setTimeout(() => {
+      this.showEditModal.set(false);
+      this.editingQuestion.set(null);
+      this.isClosingModal.set(false);
+    }, 300);
   }
 
   cancelEditModal() {
@@ -300,14 +305,17 @@ export class PdfQuizComponent implements OnInit {
       }
     }, 50);
 
-    this.selectedQuizToImport.set(null);
-    this.showImportModal.set(false);
+    this.closeImportModal();
   }
 
   closeImportModal() {
-    this.showImportModal.set(false);
-    this.selectedQuizToImport.set(null);
-    this.selectedQuestionIdsToImport.set([]);
-    this.searchQuery.set('');
+    this.isClosingModal.set(true);
+    setTimeout(() => {
+      this.showImportModal.set(false);
+      this.selectedQuizToImport.set(null);
+      this.selectedQuestionIdsToImport.set([]);
+      this.searchQuery.set('');
+      this.isClosingModal.set(false);
+    }, 300);
   }
 }
