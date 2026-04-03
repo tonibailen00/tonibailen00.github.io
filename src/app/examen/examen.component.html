@@ -10,9 +10,9 @@
       </div>
     </div>
 
-    <div *ngIf="quizzes().length === 0" class="empty-state">
+    <div *ngIf="quizzes().length === 0" class="glass-panel empty-state">
       <p>No tienes ningún cuestionario guardado.</p>
-      <button class="btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
+      <button class="btn-glass btn-glass-primary btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
     </div>
 
     <div class="card-grid">
@@ -78,14 +78,14 @@
       </div>
 
       <div class="exam-footer-nav">
-        <button class="btn-nav glass-panel" [disabled]="currentQuestionIndex() === 0"
+        <button class="btn-glass btn-glass-light btn-nav" [disabled]="currentQuestionIndex() === 0"
           (click)="goToQuestion(currentQuestionIndex() - 1)">Anterior</button>
-        <button *ngIf="currentQuestionIndex() < qz.questions.length - 1" class="btn-nav glass-panel primary"
+        <button *ngIf="currentQuestionIndex() < qz.questions.length - 1" class="btn-glass btn-glass-primary btn-nav"
           (click)="goToQuestion(currentQuestionIndex() + 1)">Siguiente</button>
         <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && !examFinished()"
-          class="btn-finish-exam glass-panel" (click)="finishExam(qz)">🏁 Finalizar</button>
-        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && examFinished()" class="btn-finish-exam"
-          (click)="requestExit()">Volver a test</button>
+          class="btn-glass btn-glass-success btn-finish-exam" (click)="finishExam(qz)">🏁 Finalizar</button>
+        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && examFinished()"
+          class="btn-glass btn-glass-primary btn-finish-exam" (click)="requestExit()">Volver a test</button>
       </div>
     </div>
   </ng-container>

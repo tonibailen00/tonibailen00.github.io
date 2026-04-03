@@ -14,9 +14,9 @@
 
   <div *ngIf="loading()" class="loading">Cargando...</div>
 
-  <div *ngIf="!loading() && quizzes().length === 0" class="empty-state">
+  <div *ngIf="!loading() && quizzes().length === 0" class="glass-panel empty-state">
     <p>No tienes ningún cuestionario guardado.</p>
-    <button class="btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
+    <button class="btn-glass btn-glass-primary btn-primary" (click)="goToCreate()">Crear uno nuevo</button>
   </div>
 
   <div class="card-grid">

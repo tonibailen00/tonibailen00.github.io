@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="content-card">
+  <div class="glass-panel content-card">
     <label class="file-label">
       Subir PDF (Opcional)
       <input type="file" accept="application/pdf" (change)="onFileChange($event)" />
@@ -31,13 +31,14 @@
     </div>
 
     <div class="controls">
-      <button (click)="visualize()" [disabled]="!file || loading()">Generar preguntas</button>
+      <button class="btn-glass btn-glass-primary btn-primary" (click)="visualize()"
+        [disabled]="!file || loading()">Generar preguntas</button>
     </div>
 
     <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
 
     <!-- Empty state message -->
-    <div *ngIf="visualized() && questions().length === 0 && !loading()" class="empty-state">
+    <div *ngIf="visualized() && questions().length === 0 && !loading()" class="glass-panel empty-state">
       <p>No se ha encontrado ninguna pregunta con el formato esperado en este PDF.</p>
       <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el "Generar preguntas"
         interactuando con los distintos modos disponibles.</small>
@@ -45,7 +46,7 @@
   </div>
 
   <!-- Question List / Editor Mode -->
-  <div class="content-card quiz-list">
+  <div class="glass-panel content-card quiz-list">
     <div class="quiz-header">
       <div class="title-container">
         <h3>{{ quizTitle() || 'Cuestionario' }} {{ questions().length > 0 ? '(' + questions().length + ' preguntas)' :
@@ -53,7 +54,7 @@
       </div>
     </div>
     <ol *ngIf="questions().length > 0">
-      <li *ngFor="let q of questions()" class="question-card" #questionCard>
+      <li *ngFor="let q of questions()" class="apple-glass-panel question-card" #questionCard>
 
         <!-- View Mode (Edit moved to Modal) -->
         <div class="question-header">
@@ -101,7 +102,8 @@
               <button class="icon-btn delete-btn" (click)="removeOption(eq, i)" title="Quitar opción"><i
                   class="ph ph-x"></i></button>
             </div>
-            <button class="btn-small mt-2" (click)="addOption(eq)"><i class="ph ph-plus"></i> Añadir Opción</button>
+            <button class="btn-glass btn-glass-primary btn-primary btn-small mt-2" (click)="addOption(eq)"><i
+                class="ph ph-plus"></i> Añadir Opción</button>
           </div>
         </div>
       </div>
@@ -119,7 +121,8 @@
       <div class="modal-header">
         <h3 *ngIf="!selectedQuizToImport()">Selecciona un cuestionario</h3>
         <h3 *ngIf="selectedQuizToImport()">
-          <button class="btn-back-modal" (click)="selectedQuizToImport.set(null)"><i class="ph ph-arrow-left"></i>
+          <button class="btn-glass btn-glass-light btn-small" (click)="selectedQuizToImport.set(null)"><i
+              class="ph ph-arrow-left"></i>
             Volver</button>
           Preguntas de: {{ selectedQuizToImport()?.title }}
         </h3>
@@ -134,7 +137,7 @@
 
         <!-- List of Quizzes -->
         <div *ngIf="!selectedQuizToImport()" class="modal-list">
-          <div *ngIf="filteredQuizzes().length === 0" class="empty-state">
+          <div *ngIf="filteredQuizzes().length === 0" class="glass-panel empty-state">
             <p>No se encontraron resultados.</p>
           </div>
           <div *ngFor="let quiz of filteredQuizzes()" class="modal-list-item" (click)="selectQuizForImport(quiz)">
@@ -142,17 +145,18 @@
               <strong>{{ quiz.title }}</strong>
               <div class="small-text">{{ quiz.questions.length }} preguntas</div>
             </div>
-            <button class="btn-select">▶️ Ver</button>
+            <button class="btn-glass btn-glass-primary btn-primary btn-small">▶️ Ver</button>
           </div>
         </div>
 
         <!-- List of Questions in selected quiz -->
         <div *ngIf="selectedQuizToImport()" class="modal-list">
-          <div *ngIf="filteredQuestions().length === 0" class="empty-state">
+          <div *ngIf="filteredQuestions().length === 0" class="glass-panel empty-state">
             <p>No se encontraron preguntas.</p>
           </div>
-          <div *ngFor="let q of filteredQuestions(); let i = index" class="modal-question-item selectable"
-            (click)="toggleQuestionSelection(q.id)" [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
+          <div *ngFor="let q of filteredQuestions(); let i = index"
+            class="apple-glass-panel modal-question-item selectable" (click)="toggleQuestionSelection(q.id)"
+            [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
             <input type="checkbox" [checked]="selectedQuestionIdsToImport().includes(q.id)"
               (click)="$event.stopPropagation()" (change)="toggleQuestionSelection(q.id)">
             <div class="q-text"><strong>{{ i + 1 }}.</strong> {{ q.question }}</div>
@@ -161,8 +165,8 @@
       </div>
 
       <div class="modal-footer" *ngIf="selectedQuizToImport()">
-        <button class="btn-import-bulk" [disabled]="selectedQuestionIdsToImport().length === 0"
-          (click)="importSelectedQuestions()">
+        <button class="btn-glass btn-glass-success btn-import-bulk"
+          [disabled]="selectedQuestionIdsToImport().length === 0" (click)="importSelectedQuestions()">
           Importar seleccionadas ({{ selectedQuestionIdsToImport().length }})
         </button>
       </div>
