@@ -1,7 +1,6 @@
 <div class="page-container">
   <div *ngIf="loading()" class="loading">Cargando...</div>
 
-  <!-- Vista de lista cuando no hay quiz seleccionado desde las URL param -->
   <div *ngIf="!loading() && !quiz()">
     <div class="page-header">
       <div class="header-title">
@@ -33,7 +32,7 @@
   <ng-container *ngIf="quiz() as qz">
     <div class="exam-view-container">
       <div class="exam-header-nav">
-        <button class="btn-back-icon glass-panel" (click)="requestExit()"><i class="ph-bold ph-arrow-left"></i></button>
+        <button class="btn-back-icon icon-btn" (click)="requestExit()"><i class="ph-bold ph-arrow-left"></i></button>
         <h2 class="truncate">{{ qz.title }}</h2>
         <span class="progress-text">{{ currentQuestionIndex() + 1 }} / {{ qz.questions.length }}</span>
       </div>

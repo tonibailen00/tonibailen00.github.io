@@ -23,7 +23,6 @@ export class ExamenComponent implements OnInit, OnDestroy {
     quizzes = signal<StoredQuiz[]>([]);
     loading = signal(true);
 
-    // Exam Data
     currentQuestionIndex = signal(0);
     examFinished = signal(false);
     userAnswers = signal<Record<number, number>>({});
@@ -44,7 +43,7 @@ export class ExamenComponent implements OnInit, OnDestroy {
         await this.ui.withLoading(this.loading, async () => {
             const allQuizzes = await this.storage.getQuizzes();
             this.quizzes.set(allQuizzes);
-            this.quiz.set(null); // Reset single quiz view
+            this.quiz.set(null);
         });
     }
 
@@ -122,7 +121,6 @@ export class ExamenComponent implements OnInit, OnDestroy {
         this.examFinished.set(true);
         this.document.defaultView?.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Guardar resultado
         try {
             await this.storage.saveResult({
                 id: crypto.randomUUID(),

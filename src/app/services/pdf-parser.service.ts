@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 import type { TextContent, TextItem } from 'pdfjs-dist/types/src/display/api';
 
-// We dynamically build the worker URL using the base href to support GitHub Pages subfolder deployments
 const baseHref = typeof document !== 'undefined' ? (document.querySelector('base')?.getAttribute('href') || '/') : '/';
 GlobalWorkerOptions.workerSrc = baseHref + (baseHref.endsWith('/') ? '' : '/') + 'pdf.worker.min.mjs';
 
@@ -32,7 +31,6 @@ export class PdfParserService {
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
 
-            // Get Annotations
             const annotations = await page.getAnnotations();
             const highlightRects: number[][] = [];
             for (const a of annotations) {
@@ -55,7 +53,6 @@ export class PdfParserService {
             const styles = content.styles || {};
 
             for (const rawItem of content.items) {
-                // Assert as ExtendedTextItem, ignore TextMarkedContent
                 const item = rawItem as ExtendedTextItem;
                 if (!('str' in item)) continue;
 

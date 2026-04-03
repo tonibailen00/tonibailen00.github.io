@@ -37,7 +37,6 @@
 
     <div id="pdf-canvas-container" class="canvas-container" aria-live="polite"></div>
 
-    <!-- Empty state message -->
     <div *ngIf="visualized() && questions().length === 0 && !loading()" class="glass-panel empty-state">
       <p>No se ha encontrado ninguna pregunta con el formato esperado en este PDF.</p>
       <small>Asegúrate de que el documento sigue un patrón numerado ("1.", "2.", etc.) o usa el "Generar preguntas"
@@ -45,7 +44,6 @@
     </div>
   </div>
 
-  <!-- Question List / Editor Mode -->
   <div class="glass-panel content-card quiz-list">
     <div class="quiz-header">
       <div class="title-container">
@@ -54,9 +52,7 @@
       </div>
     </div>
     <ol *ngIf="questions().length > 0">
-      <li *ngFor="let q of questions()" class="apple-glass-panel question-card" #questionCard>
-
-        <!-- View Mode (Edit moved to Modal) -->
+      <li *ngFor="let q of questions()" class="glass-panel question-card" #questionCard>
         <div class="question-header">
           <div class="question">{{ q.id }}. {{ q.question }}</div>
           <div class="question-actions">
@@ -78,7 +74,6 @@
     </ol>
   </div>
 
-  <!-- Edit/Create Question Modal Overlay -->
   <div class="modal-overlay" *ngIf="showEditModal() && editingQuestion() as eq">
     <div class="modal-content">
       <div class="modal-header">
@@ -115,7 +110,6 @@
     </div>
   </div>
 
-  <!-- Import Modal Overlay -->
   <div class="modal-overlay" *ngIf="showImportModal()">
     <div class="modal-content">
       <div class="modal-header">
@@ -135,7 +129,6 @@
             (input)="updateSearch($event)">
         </div>
 
-        <!-- List of Quizzes -->
         <div *ngIf="!selectedQuizToImport()" class="modal-list">
           <div *ngIf="filteredQuizzes().length === 0" class="glass-panel empty-state">
             <p>No se encontraron resultados.</p>
@@ -149,14 +142,12 @@
           </div>
         </div>
 
-        <!-- List of Questions in selected quiz -->
         <div *ngIf="selectedQuizToImport()" class="modal-list">
           <div *ngIf="filteredQuestions().length === 0" class="glass-panel empty-state">
             <p>No se encontraron preguntas.</p>
           </div>
-          <div *ngFor="let q of filteredQuestions(); let i = index"
-            class="apple-glass-panel modal-question-item selectable" (click)="toggleQuestionSelection(q.id)"
-            [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
+          <div *ngFor="let q of filteredQuestions(); let i = index" class="glass-panel modal-question-item selectable"
+            (click)="toggleQuestionSelection(q.id)" [class.selected]="selectedQuestionIdsToImport().includes(q.id)">
             <input type="checkbox" [checked]="selectedQuestionIdsToImport().includes(q.id)"
               (click)="$event.stopPropagation()" (change)="toggleQuestionSelection(q.id)">
             <div class="q-text"><strong>{{ i + 1 }}.</strong> {{ q.question }}</div>
@@ -173,14 +164,10 @@
     </div>
   </div>
 
-  <!-- Floating Action Buttons (Apple Liquid Glass Style) -->
   <div class="fab-group">
-    <!-- Botón condicional de Importar (solo si hay guardados) -->
     <button class="fab-item fab-small" *ngIf="hasSavedQuizzes()" (click)="openImportModal()" title="Importar preguntas">
       <i class="ph-bold ph-download-simple"></i>
     </button>
-
-    <!-- Botones siempre fijos -->
     <button class="fab-item fab-small" (click)="addNewQuestion()" title="Añadir pregunta desde cero">
       <i class="ph-bold ph-plus"></i>
     </button>

@@ -30,19 +30,13 @@ export class PdfQuizComponent implements OnInit {
     questions = signal<QuizQuestion[]>([]);
     file?: File;
     visualized = signal(false);
-
-    // Edit Question Modal state
     showEditModal = signal(false);
     editingQuestion = signal<QuizQuestion | null>(null);
     isCreatingNew = signal(false);
-
-    // Import modal state
     showImportModal = signal(false);
     savedQuizzes = signal<StoredQuiz[]>([]);
     selectedQuizToImport = signal<StoredQuiz | null>(null);
     selectedQuestionIdsToImport = signal<number[]>([]);
-
-    // Search state
     searchQuery = signal('');
     hasSavedQuizzes = signal(false);
 
@@ -63,7 +57,6 @@ export class PdfQuizComponent implements OnInit {
     }
 
     async ngOnInit() {
-        // Al cargar, verificar si venimos de "editar" (con un id por query param)
         const id = this.route.snapshot.queryParamMap.get('id');
         if (id) {
             await this.ui.withLoading(this.loading, async () => {
@@ -72,22 +65,16 @@ export class PdfQuizComponent implements OnInit {
                     this.loadedQuizId.set(qz.id);
                     this.quizTitle.set(qz.title);
                     this.questions.set(qz.questions);
-                    this.visualized.set(true); // Simula que ya procesamos el layout base
+                    this.visualized.set(true);
                 } else {
                     await this.ui.alert('No se encontró el cuestionario para editar.', 'Cuestionario no encontrado', 'ph-bold ph-x-circle');
                 }
             });
         }
-
-        // Verificar si existen tests guardados para mostrar/ocultar botón de importar
         const saved = await this.storage.getQuizzes();
         this.hasSavedQuizzes.set(saved.length > 0);
     }
 
-    // Modes for identifying correct answers: 
-    // 'bold' -> font weight 700
-    // 'explicit' -> "Respuesta: X" beneath question
-    // 'highlight' -> yellow background/color
     parseMode = signal<ParseMode>('bold');
 
     onFileChange(ev: Event) {
@@ -95,7 +82,6 @@ export class PdfQuizComponent implements OnInit {
         const f = input.files?.[0];
         if (!f) return;
         this.file = f;
-        // set title defaulting from filename without extension
         this.quizTitle.set(f.name.replace(/\.[^/.]+$/, ""));
         this.text.set('');
         this.questions.set([]);
@@ -115,9 +101,7 @@ export class PdfQuizComponent implements OnInit {
         });
     }
 
-    // CRUD Methods
     editQuestion(q: QuizQuestion) {
-        // Clonar para no mutar directamente hasta guardar
         this.editingQuestion.set(JSON.parse(JSON.stringify(q)));
         this.isCreatingNew.set(false);
         this.showEditModal.set(true);
@@ -186,7 +170,6 @@ export class PdfQuizComponent implements OnInit {
         const letters = 'abcdefghijklmnopqrstuvwxyz';
         const nextLetter = q.options.length < letters.length ? letters[q.options.length] : '?';
         q.options.push({ text: `${nextLetter}) Nueva opción`, correct: false });
-        // Force reactivity
         this.editingQuestion.set({ ...q });
     }
 
@@ -220,7 +203,6 @@ export class PdfQuizComponent implements OnInit {
                     await this.storage.saveQuiz(newQuiz);
                     const wasEditing = !!this.loadedQuizId();
 
-                    // Limpiar sesión
                     this.questions.set([]);
                     this.quizTitle.set('Cuestionario Nuevo');
                     this.loadedQuizId.set(null);
@@ -228,7 +210,6 @@ export class PdfQuizComponent implements OnInit {
 
                     await this.ui.alert('El cuestionario se ha guardado con éxito.', '¡Guardado!', 'ph-bold ph-check-circle');
 
-                    // Regresar a la lista si estábamos editando
                     if (wasEditing) {
                         this.navService.goToCuestionarios();
                     }
@@ -289,7 +270,6 @@ export class PdfQuizComponent implements OnInit {
 
         this.questions.set([...currentQuestions, ...newQuestions]);
 
-        // Wait and scroll
         setTimeout(() => {
             const lastItem = this.questionCards.last;
             if (lastItem) {
@@ -297,7 +277,6 @@ export class PdfQuizComponent implements OnInit {
             }
         }, 50);
 
-        // Go back to the quiz list after importing
         this.selectedQuizToImport.set(null);
         this.showImportModal.set(false);
     }

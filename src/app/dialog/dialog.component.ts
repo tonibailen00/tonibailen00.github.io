@@ -24,7 +24,7 @@ export class DialogComponent {
   confirm() {
     const state = this.ui.dialogState();
     if (state && state.type === 'prompt' && !state.inputValue?.trim()) {
-      return; // No submit empty prompts
+      return;
     }
 
     if (state && state.onConfirm) {

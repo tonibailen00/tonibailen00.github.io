@@ -36,12 +36,11 @@ export class CuestionariosComponent implements OnInit {
         const confirmed = await this.uiService.confirm('¿Estás seguro de que quieres eliminar este cuestionario de tu dispositivo?', 'Eliminar cuestionario', 'ph-bold ph-trash');
         if (confirmed) {
             await this.storage.deleteQuiz(id);
-            await this.loadQuizzes(); // Recargar la lista
+            await this.loadQuizzes();
         }
     }
 
     editQuiz(id: string) {
-        // Navegamos a la vista de creación pasando el ID para cargar el test
         this.navService.goToCreate(id);
     }
 
@@ -61,9 +60,7 @@ export class CuestionariosComponent implements OnInit {
         try {
             const parsed = await this.fileService.readJsonFile(file);
 
-            // Allow importing either a single StoredQuiz or an array of QuizQuestions
             if (Array.isArray(parsed) && parsed.every(p => 'id' in p && 'question' in p)) {
-                // Prompt user using unified dialog
                 const title = await this.uiService.prompt(
                     'Se ha detectado una lista de preguntas. Introduce un nombre para este nuevo cuestionario:',
                     'Importar lista', 'Nombre...', 'Cuestionario Importado', 'ph-bold ph-download-simple'
@@ -81,7 +78,6 @@ export class CuestionariosComponent implements OnInit {
                     this.loadQuizzes();
                 }
             } else if ('id' in parsed && 'title' in parsed && Array.isArray(parsed.questions)) {
-                // It's a StoredQuiz object, save directly but generate a new internal ID to allow duplicates
                 const newQuiz: StoredQuiz = {
                     ...parsed,
                     id: crypto.randomUUID(),
@@ -97,7 +93,6 @@ export class CuestionariosComponent implements OnInit {
             console.error('Error parsing JSON:', err);
             await this.uiService.alert('No se pudo leer o importar el archivo JSON.', 'Error', 'ph-bold ph-warning-circle');
         } finally {
-            // Reset input for same file upload later
             input.value = '';
         }
     }

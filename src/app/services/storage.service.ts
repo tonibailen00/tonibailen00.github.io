@@ -24,7 +24,7 @@ export interface ExamResult {
 })
 export class StorageService {
     private readonly DB_NAME = 'QuizApp_DB';
-    private readonly DB_VERSION = 2; // Increment version
+    private readonly DB_VERSION = 2;
     private readonly STORE_QUIZZES = 'quizzes';
     private readonly STORE_RESULTS = 'results';
 
@@ -68,7 +68,6 @@ export class StorageService {
             const request = store.getAll();
 
             request.onsuccess = () => {
-                // Sort by date (newest first)
                 const data = request.result as StoredQuiz[];
                 resolve(data.sort((a, b) => b.date - a.date));
             };
@@ -120,7 +119,7 @@ export class StorageService {
 
             request.onsuccess = () => {
                 const data = request.result as ExamResult[];
-                resolve(data.sort((a, b) => b.date - a.date)); // Newest first
+                resolve(data.sort((a, b) => b.date - a.date));
             };
             request.onerror = () => reject(request.error);
         });

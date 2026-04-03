@@ -27,7 +27,6 @@
           <p class="subtitle">{{ quiz.questions.length }} preguntas • {{ quiz.date | date:'dd/MM/yyyy HH:mm' }}</p>
         </div>
         <div class="card-actions">
-          <!-- Botones de acción sólo con iconos -->
           <button class="icon-btn btn-edit" (click)="editQuiz(quiz.id)" title="Editar"><i
               class="ph-bold ph-pencil-simple"></i></button>
           <button class="icon-btn btn-export" (click)="exportToJson(quiz)" title="Descargar JSON"><i

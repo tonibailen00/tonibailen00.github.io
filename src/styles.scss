@@ -1,20 +1,46 @@
-@use './app/glass-mixins.scss' as glass;
 @use './theme.scss';
 
-.apple-glass-panel {
+.glass-panel {
+  background: var(--glass-bg-gradient);
   -webkit-backdrop-filter: var(--glass-blur-md);
   backdrop-filter: var(--glass-blur-md);
-  border-radius: 12px;
-  background: var(--glass-bg-light);
   border: 1px solid transparent;
   background-clip: padding-box;
-  box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-light);
+  box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-heavy);
+  transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+
+  @supports not (backdrop-filter: blur(10px)) {
+    background: var(--bg-fallback);
+  }
+}
+
+.glass-pill {
+  background: var(--glass-bg-transparent);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0.5px 1px var(--glass-border-light), var(--glass-shadow-light);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  @supports not (backdrop-filter: blur(10px)) {
+    background: var(--bg-fallback);
+  }
 }
 
 .btn-glass {
-  border: none;
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  backdrop-filter: var(--glass-blur-sm);
+  background-clip: padding-box;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  border: 1px solid transparent;
   font-family: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -23,15 +49,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  box-shadow: var(--glass-shadow-light);
 
   background: var(--btn-bg, var(--glass-bg-light));
   color: var(--btn-text, var(--text-main));
-  border: 1px solid transparent;
-  background-clip: padding-box;
+  text-shadow: none;
   box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-light);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 
   &:hover:not(:disabled) {
     background: var(--btn-bg-hover, var(--glass-surface-active));
@@ -49,6 +71,10 @@
     color: var(--text-muted) !important;
     cursor: not-allowed;
     box-shadow: none !important;
+  }
+
+  @supports not (backdrop-filter: blur(10px)) {
+    background: var(--bg-fallback);
   }
 }
 
@@ -78,14 +104,6 @@
   --btn-text: var(--text-main);
   --btn-border: var(--glass-border);
   --btn-bg-hover: var(--glass-surface-active);
-}
-
-.glass-panel {
-  @include glass.liquid-glass-panel;
-}
-
-.glass-pill {
-  @include glass.liquid-glass-pill;
 }
 
 * {
@@ -278,15 +296,17 @@ button {
   background: var(--primary-glass-transparent);
   border: 1px solid var(--primary-border);
   color: var(--primary-color);
-  box-shadow: var(--glass-shadow-light);
+  text-shadow: none;
 
   .text {
     font-weight: 700;
     font-size: 1rem;
-    color: var(--primary-color);
+    color: inherit;
   }
 
   &:hover {
+    background: var(--primary-glass);
+    color: #fff;
     background: var(--primary-glass);
   }
 }
@@ -364,18 +384,28 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @supports not (backdrop-filter: blur(10px)) {
+    background: rgba(0, 0, 0, 0.5);
+  }
 }
 
 .modal-content {
   background: var(--glass-surface-hover);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-lg);
+  backdrop-filter: var(--glass-blur-lg);
   border-radius: 24px;
   width: 90%;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  @supports not (backdrop-filter: blur(10px)) {
+    background: var(--bg-fallback);
+  }
 }
 
 .modal-small {
@@ -462,10 +492,12 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-shadow: none;
 }
 
 .btn-confirm:hover:not(:disabled) {
   background: var(--primary-glass);
+  color: #fff;
   transform: translateY(-1px);
 }
 
