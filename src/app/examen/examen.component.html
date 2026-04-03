@@ -82,8 +82,8 @@
           (click)="goToQuestion(currentQuestionIndex() - 1)">Anterior</button>
         <button *ngIf="currentQuestionIndex() < qz.questions.length - 1" class="btn-nav glass-panel primary"
           (click)="goToQuestion(currentQuestionIndex() + 1)">Siguiente</button>
-        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && !examFinished()" class="btn-finish-exam glass-panel"
-          (click)="finishExam(qz)">🏁 Finalizar</button>
+        <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && !examFinished()"
+          class="btn-finish-exam glass-panel" (click)="finishExam(qz)">🏁 Finalizar</button>
         <button *ngIf="currentQuestionIndex() === qz.questions.length - 1 && examFinished()" class="btn-finish-exam"
           (click)="requestExit()">Volver a test</button>
       </div>

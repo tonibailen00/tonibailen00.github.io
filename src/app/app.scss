@@ -1,5 +1,3 @@
-
-
 .app-container {
   display: flex;
   flex-direction: column;
@@ -48,7 +46,8 @@
   flex: 1;
   height: 58px;
   border-radius: 29px;
-  border: 1px solid transparent; /* Para evitar saltos al añadir bordes en active */
+  border: 1px solid transparent;
+  /* Para evitar saltos al añadir bordes en active */
   /* Destacado redondeado */
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 

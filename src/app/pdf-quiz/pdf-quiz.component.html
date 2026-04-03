@@ -67,7 +67,8 @@
         </div>
         <ul class="options">
           <li *ngFor="let opt of q.options" [class.correct]="opt.correct">
-            <span *ngIf="opt.correct"><strong><i class="ph-fill ph-check-circle" style="color: var(--success-color);"></i> {{ opt.text }}</strong></span>
+            <span *ngIf="opt.correct"><strong><i class="ph-fill ph-check-circle"
+                  style="color: var(--success-color);"></i> {{ opt.text }}</strong></span>
             <span *ngIf="!opt.correct">{{ opt.text }}</span>
           </li>
         </ul>
