@@ -80,6 +80,8 @@
   padding: 0.5rem 0.5rem;
   margin: -0.5rem -0.5rem 0 -0.5rem;
   scrollbar-width: thin;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
 
 .nav-dot {
@@ -90,6 +92,7 @@
   line-height: normal;
   border-radius: 22px;
   padding: 0 12px;
+  scroll-snap-align: center;
 
   color: var(--text-main);
   font-weight: 600;
@@ -115,10 +118,9 @@
 
 .nav-dot.active {
   border-color: var(--primary-color);
-  box-shadow: var(--glass-shadow-heavy);
+  box-shadow: 0 0 10px var(--primary-glass-transparent), var(--glass-shadow-heavy);
   background: var(--glass-surface-active);
   transform: scale(1.1);
-  animation: liquid-morph 4s ease-in-out infinite alternate;
 }
 
 .nav-dot.correct {

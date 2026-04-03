@@ -84,6 +84,14 @@ export class ExamenComponent implements OnInit, OnDestroy {
 
     goToQuestion(index: number) {
         this.currentQuestionIndex.set(index);
+
+        setTimeout(() => {
+            const dotsContainer = this.document.querySelector('.dots-scroll');
+            const targetDot = dotsContainer?.children[index] as HTMLElement;
+            if (dotsContainer && targetDot) {
+                targetDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }, 50);
     }
 
     async requestExit() {

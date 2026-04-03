@@ -115,7 +115,7 @@
           <div class="options-edit">
             <h4>Opciones:</h4>
             @for (opt of eq.options; track opt; let i = $index) {
-            <div class="option-edit-row">
+            <div class="option-edit-row" [class.removing]="$any(opt)._removing">
               <input type="checkbox" [(ngModel)]="opt.correct" title="¿Opción correcta?" />
               <input type="text" [(ngModel)]="opt.text" class="option-input" placeholder="Texto de la opción" />
               <button class="icon-btn delete-btn" (click)="removeOption(eq, i)" title="Quitar opción">

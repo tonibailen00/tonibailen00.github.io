@@ -4,9 +4,9 @@
   background: var(--glass-bg-gradient);
   -webkit-backdrop-filter: var(--glass-blur-md);
   backdrop-filter: var(--glass-blur-md);
-  border: 1px solid transparent;
+  border: 1px solid var(--glass-border-light);
   background-clip: padding-box;
-  box-shadow: inset 0 0.5px 1px var(--glass-border), var(--glass-shadow-heavy);
+  box-shadow: inset 0 0.5px 1px rgba(255, 255, 255, 0.4), var(--glass-shadow-heavy);
   transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -57,7 +57,8 @@
     opacity: 0;
   }
 
-  &:hover::before:not(:disabled) {
+  &:hover::before:not(:disabled),
+  &:active::before:not(:disabled) {
     opacity: 1;
     animation: glass-shine 0.8s ease-in-out forwards;
   }
@@ -110,11 +111,12 @@
   }
 
   &:disabled {
+    opacity: 0.5;
+    filter: grayscale(100%);
+    cursor: not-allowed;
     background: var(--disabled-glass) !important;
     border: 1px solid var(--disabled-border) !important;
     color: var(--text-muted) !important;
-    cursor: not-allowed;
-    box-shadow: none !important;
   }
 
   @supports not (backdrop-filter: blur(10px)) {
@@ -357,7 +359,6 @@ button {
   color: var(--primary-color);
   text-shadow: none;
   box-shadow: 0 8px 24px var(--primary-glass-transparent);
-  animation: liquid-morph 8s ease-in-out infinite alternate;
 
   .text {
     font-weight: 700;
@@ -907,6 +908,8 @@ input[type="radio"]:checked::after {
     .option-marker {
       font-weight: 700;
       color: var(--primary-color);
+      display: inline-block;
+      transform-origin: center;
     }
 
     &:hover:not(.selected) {
@@ -922,6 +925,10 @@ input[type="radio"]:checked::after {
       border-color: var(--primary-color);
       box-shadow: inset 4px 0 0 0 var(--primary-color), var(--glass-shadow-light);
       transform: none;
+
+      .option-marker {
+        animation: jelly-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
     }
 
     &.correct-highlight {

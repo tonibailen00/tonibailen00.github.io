@@ -198,8 +198,13 @@ export class PdfQuizComponent implements OnInit {
   }
 
   removeOption(q: QuizQuestion, index: number) {
-    q.options.splice(index, 1);
+    (q.options[index] as any)['_removing'] = true;
     this.editingQuestion.set({ ...q });
+    
+    setTimeout(() => {
+        q.options.splice(index, 1);
+        this.editingQuestion.set({ ...q });
+    }, 280);
   }
 
   async openSaveModal() {
