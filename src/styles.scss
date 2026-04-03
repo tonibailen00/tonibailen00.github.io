@@ -1,10 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
 @use './app/glass-mixins.scss' as glass;
 @use './theme.scss';
 
-/* =========================================================================    
-   UTILITIES GLOBAL (Apple Glass variables-driven)
-   ========================================================================= */
 .apple-glass-panel {
   -webkit-backdrop-filter: var(--glass-blur-md);
   backdrop-filter: var(--glass-blur-md);
@@ -84,7 +80,6 @@
   --btn-bg-hover: var(--glass-surface-active);
 }
 
-/* Utils for liquid glass */
 .glass-panel {
   @include glass.liquid-glass-panel;
 }
@@ -97,6 +92,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -113,27 +109,19 @@ button {
   font-family: inherit;
 }
 
-/* =========================================================================
-   GLOBAL LAYOUT & REUSABLE UTILITIES
-   ========================================================================= */
-
-/* Main wrapper for all views */
 .page-container {
   width: 95%;
   margin: 3rem auto;
   padding: 2rem;
   padding-bottom: 90px;
-  /* Accounts for bottom nav on mobile */
 }
 
-/* Base style for forms and large card blocks */
 .content-card {
   padding: 1.5rem;
   margin-bottom: 1.5rem;
   border-radius: 20px;
 }
 
-/* Common Header Component */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -168,7 +156,6 @@ button {
   align-items: center;
 }
 
-/* Empty State & Loading */
 .loading {
   text-align: center;
   color: var(--text-muted);
@@ -187,7 +174,6 @@ button {
   margin-bottom: 1rem;
 }
 
-/* Buttons */
 .btn-primary {
   padding: 0.75rem 1.5rem;
 }
@@ -211,7 +197,6 @@ button {
   transform: translateY(-1px);
 }
 
-/* Icon Button simple variant */
 .icon-btn {
   background: var(--glass-bg-transparent);
   border: 1px solid var(--glass-border);
@@ -241,11 +226,9 @@ button {
   transform: translateY(1px) scale(0.95);
 }
 
-/* Generic Icon Action Buttons */
 .fab-group {
   position: fixed;
   bottom: calc(120px + env(safe-area-inset-bottom));
-  /* Distancia segura por encima del Bottom Nav */
   right: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -262,9 +245,7 @@ button {
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  /* Apple Glass Effect (Matched with Bottom Nav) */
   background: var(--glass-bg-transparent);
-  /* Más transparente */
   backdrop-filter: blur(3px);
   box-shadow: var(--glass-shadow-light);
 
@@ -295,7 +276,6 @@ button {
   gap: 0.5rem;
 
   background: var(--primary-glass-transparent);
-  /* Soft primary tint y más transparente */
   border: 1px solid var(--primary-border);
   color: var(--primary-color);
   box-shadow: var(--glass-shadow-light);
@@ -311,7 +291,6 @@ button {
   }
 }
 
-/* Grids for lists (Mis Tests, Resultados, Seleccionar examen) */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -319,11 +298,9 @@ button {
   margin-top: 1.5rem;
 }
 
-/* Cards used inside grids */
 .grid-card {
   padding: 1.5rem;
   border-radius: 20px;
-  /* Big apple radius */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -350,7 +327,6 @@ button {
   flex: 1;
 }
 
-/* Actions fixed to Top Left/Right */
 .card-actions {
   display: flex;
   gap: 0.5rem;
@@ -376,10 +352,6 @@ button {
   font-size: 0.9rem;
 }
 
-/* =========================================================================
-   MODALS
-   ========================================================================= */
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -396,7 +368,6 @@ button {
 
 .modal-content {
   background: var(--glass-surface-hover);
-  /* Liquid glass modal */
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow-heavy);
   border-radius: 24px;
@@ -482,7 +453,6 @@ button {
 
 .btn-confirm {
   background: var(--primary-glass-transparent);
-  /* Primary tinted liquid glass */
   backdrop-filter: blur(10px);
   color: var(--primary-color);
   border: 1px solid var(--primary-border);
@@ -507,7 +477,6 @@ button {
   box-shadow: none;
 }
 
-/* Internal inputs */
 .search-container {
   margin-bottom: 1rem;
 }
@@ -516,7 +485,6 @@ button {
   margin-bottom: 0 !important;
 }
 
-/* Inputs & Forms (Liquid Glass) */
 .search-input,
 .question-input,
 .id-input,
@@ -528,7 +496,6 @@ button {
   font-size: 0.95rem;
   outline: none;
   background: var(--glass-surface);
-  /* Liquid glass */
   backdrop-filter: blur(10px);
   color: var(--text-main);
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -551,9 +518,9 @@ input[type="radio"] {
 
   width: 1.25rem;
   height: 1.25rem;
+  flex-shrink: 0;
   background: var(--glass-bg-light);
   border: 2px solid var(--border-color);
-  /* Más visible */
   backdrop-filter: blur(10px);
   border-radius: 6px;
   cursor: pointer;
@@ -571,7 +538,6 @@ input[type="radio"] {
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
   background: var(--primary-glass-hover);
-  /* Primary liquid color */
   border-color: var(--glass-surface-active);
   box-shadow: var(--glass-shadow-heavy);
 }
@@ -591,7 +557,6 @@ input[type="radio"]:checked::after {
   border-radius: 50%;
 }
 
-/* File Upload Label */
 .file-label {
   display: inline-block;
   padding: 1.2rem;
@@ -619,11 +584,8 @@ input[type="radio"]:checked::after {
   }
 }
 
-/* --- Global Apple Glass Components & Buttons --- */
 .controls button {
   background: var(--primary-glass);
-  /* Liquid glass primary */
-
   color: #fff;
   border: 1px solid var(--primary-border);
   padding: 0.8rem 1.5rem;
@@ -771,7 +733,6 @@ input[type="radio"]:checked::after {
     gap: 1rem;
     padding: 1rem;
     background: var(--glass-surface);
-    /* Liquid Glass Option */
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow-light);
     border-radius: 12px;
@@ -797,7 +758,6 @@ input[type="radio"]:checked::after {
       box-shadow: var(--glass-shadow-heavy);
     }
 
-    /* Result feedback */
     &.correct-highlight {
       background: var(--success-glass-transparent) !important;
       border-color: var(--success-color) !important;

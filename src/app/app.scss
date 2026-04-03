@@ -2,14 +2,12 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  /* Viewport height for native feel */
   background: transparent;
 }
 
 .content-router {
   flex: 1;
   overflow-y: auto;
-  /* Add padding bottom equal to nav bar height to prevent content being hidden */
   padding-bottom: 110px;
 
   &.no-bottom-nav {
@@ -25,10 +23,7 @@
   max-width: 450px;
   margin: 0 auto;
   height: 70px;
-
-  /* Formato glass reemplazado por utilidades globales */
   border-radius: 35px;
-  /* Forma de pastilla flotante */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -47,8 +42,6 @@
   height: 58px;
   border-radius: 29px;
   border: 1px solid transparent;
-  /* Para evitar saltos al añadir bordes en active */
-  /* Destacado redondeado */
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   .icon {

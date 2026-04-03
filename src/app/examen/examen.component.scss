@@ -14,7 +14,6 @@
   color: var(--primary-color);
 }
 
-/* Paginación del Examen Visual */
 .exam-view-container {
   display: flex;
   flex-direction: column;
@@ -87,9 +86,7 @@
   min-width: 44px;
   height: 44px;
   box-sizing: border-box;
-  /* fix for clipped text */
   line-height: normal;
-  /* fix for clipped text */
   border-radius: 22px;
   padding: 0 12px;
 
