@@ -23,15 +23,16 @@
   justify-content: center;
   font-weight: bold;
   font-size: 1.1rem;
-  color: white;
+  color: #fff;
+  box-shadow: var(--glass-shadow-light);
 }
 
 .score-circle.pass {
-  background: var(--success-color);
+  background: var(--success-glass);
 }
 
 .score-circle.fail {
-  background: var(--danger-color);
+  background: var(--danger-glass);
 }
 
 .score-details {
@@ -42,11 +43,11 @@
 }
 
 .correct {
-  color: #047857;
+  color: var(--success-color);
   font-weight: 500;
 }
 
 .incorrect {
-  color: #b91c1c;
+  color: var(--danger-color);
   font-weight: 500;
 }

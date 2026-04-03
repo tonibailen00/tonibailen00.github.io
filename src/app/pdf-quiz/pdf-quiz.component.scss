@@ -30,7 +30,7 @@
         }
 
         .highlight-option {
-            background-color: rgb(252 235 70 / 40%);
+            background-color: var(--primary-glass-transparent);
             backdrop-filter: blur(2px);
             color: var(--text-main);
             padding: 0.1rem 0.5rem;
@@ -76,9 +76,9 @@
 }
 
 .options li.correct {
-    background: rgb(16 185 129 / 10%);
+    background: var(--success-glass-transparent);
     color: var(--success-color);
-    border: 1px solid rgb(16 185 129 / 20%);
+    border: 1px solid var(--success-glass-transparent);
 }
 
 /* Header and create button */
@@ -203,10 +203,11 @@
     position: sticky;
     top: 1rem;
     z-index: 100;
-    background: white;
+    background: var(--glass-bg-heavy);
+    backdrop-filter: var(--glass-blur-md);
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--glass-shadow-heavy);
     border: 1px solid var(--border-color);
 
     .exam-info h3 {
@@ -246,7 +247,7 @@
 
 .modal-list-item {
     padding: 0.75rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-bottom: 0.5rem;
     cursor: pointer;
@@ -256,12 +257,12 @@
     transition: background 0.2s;
 
     &:hover {
-        background: #f9fafb;
+        background: var(--glass-surface-hover);
     }
 
     .small-text {
         font-size: 0.85rem;
-        color: #6b7280;
+        color: var(--text-muted);
     }
 }
 

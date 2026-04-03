@@ -1,0 +1,112 @@
+/* =========================================================================
+   THEME PALETTE & VARIABLES (Light / Dark Mode Auto-Detection)
+   ========================================================================= */
+
+:root {
+  /* Brand Colors */
+  --primary-color: #007aff; /* Apple Blue */
+  --primary-hover: #0056b3;
+  --success-color: #34c759; /* Apple Green */
+  --danger-color: #ff3b30;  /* Apple Red */
+
+  /* Primary Tints (Liquid Glass Buttons) */
+  --primary-glass: rgb(79 70 229 / 75%);
+  --primary-glass-hover: rgb(79 70 229 / 90%);
+  --primary-glass-transparent: rgb(79 70 229 / 15%);
+  --primary-border: rgb(255 255 255 / 30%);
+
+  /* Contextual Tints */
+  --success-glass: rgb(16 185 129 / 80%);
+  --success-glass-hover: rgb(16 185 129 / 100%);
+  --success-glass-transparent: rgb(16 185 129 / 10%);
+  --danger-glass: rgb(239 68 68 / 80%);
+  --danger-glass-hover: rgb(239 68 68 / 100%);
+  --danger-glass-transparent: rgb(239 68 68 / 5%);
+  --disabled-glass: rgb(0 0 0 / 5%);
+  --disabled-border: rgb(0 0 0 / 10%);
+
+  /* Animated / Gradient Background */
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+  /* Glass Backgrounds */
+  --glass-bg-gradient: linear-gradient(135deg, rgb(255 255 255 / 40%) 0%, rgb(255 255 255 / 10%) 100%);
+  --glass-bg-light: rgb(255 255 255 / 40%);
+  --glass-bg-heavy: rgb(255 255 255 / 70%);
+  --glass-bg-transparent: rgb(255 255 255 / 15%);
+  
+  /* Glass Surfaces (Cards, Modals, Inputs) */
+  --glass-surface: rgb(255 255 255 / 35%);
+  --glass-surface-hover: rgb(255 255 255 / 50%);
+  --glass-surface-active: rgb(255 255 255 / 60%);
+
+  /* Borders */
+  --glass-border: rgb(255 255 255 / 40%);
+  --glass-border-light: rgb(255 255 255 / 20%);
+  --border-color: rgba(0, 0, 0, 0.1);
+
+  /* Shadows */
+  --glass-shadow: 0 8px 32px 0 rgb(31 38 135 / 7%);
+  --glass-shadow-heavy: 0 10px 30px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 90%), inset 0 -1px 0 rgb(0 0 0 / 5%);
+  --glass-shadow-light: 0 4px 10px rgb(31 38 135 / 10%), inset 0 1px 0 rgb(255 255 255 / 70%), inset 0 -1px 0 rgb(0 0 0 / 5%);
+  --textShadow: 0 1px 2px rgb(255 255 255 / 60%);
+
+  /* Blurs */
+  --glass-blur-sm: blur(4px);
+  --glass-blur-md: blur(12px);
+  --glass-blur-lg: blur(20px);
+
+  /* Typography */
+  --text-main: #1d1d1f;
+  --text-muted: #86868b;
+}
+
+/* --------------------------------------------------
+   DARK MODE OVERRIDES
+   -------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Backgrounds */
+    --bg-gradient: linear-gradient(135deg, #1e1e24 0%, #0a0a0b 100%);
+
+    /* Primary Tints (Adjusted for Dark Mode readability) */
+    --primary-glass: rgb(99 102 241 / 80%);
+    --primary-glass-hover: rgb(99 102 241 / 100%);
+    --primary-glass-transparent: rgb(99 102 241 / 25%);
+    --primary-border: rgb(255 255 255 / 15%);
+
+    /* Glass Backgrounds */
+    --glass-bg-gradient: linear-gradient(135deg, rgb(25 25 30 / 60%) 0%, rgb(10 10 15 / 40%) 100%);
+    --glass-bg-light: rgb(0 0 0 / 40%);
+    --glass-bg-heavy: rgb(0 0 0 / 70%);
+    --glass-bg-transparent: rgb(0 0 0 / 25%);
+
+    /* Glass Surfaces */
+    --glass-surface: rgb(255 255 255 / 8%);
+    --glass-surface-hover: rgb(255 255 255 / 15%);
+    --glass-surface-active: rgb(255 255 255 / 20%);
+
+    /* Contextual Tints */
+    --success-glass: rgb(16 185 129 / 60%);
+    --success-glass-hover: rgb(16 185 129 / 80%);
+    --success-glass-transparent: rgb(16 185 129 / 15%);
+    --danger-glass: rgb(239 68 68 / 60%);
+    --danger-glass-hover: rgb(239 68 68 / 80%);
+    --danger-glass-transparent: rgb(239 68 68 / 15%);
+    --disabled-glass: rgb(255 255 255 / 5%);
+    --disabled-border: rgb(255 255 255 / 10%);
+
+    /* Borders */
+    --glass-border: rgb(255 255 255 / 15%);
+    --glass-border-light: rgb(255 255 255 / 8%);
+    --border-color: rgba(255, 255, 255, 0.1);
+
+    /* Shadows (Darker drop shadow, subtler inset light) */
+    --glass-shadow-heavy: 0 10px 30px rgb(0 0 0 / 50%), inset 0 1px 0 rgb(255 255 255 / 15%), inset 0 -1px 0 rgb(0 0 0 / 20%);
+    --glass-shadow-light: 0 4px 10px rgb(0 0 0 / 30%), inset 0 1px 0 rgb(255 255 255 / 10%), inset 0 -1px 0 rgb(0 0 0 / 20%);
+    --textShadow: 0 1px 2px rgb(0 0 0 / 80%);
+
+    /* Typography */
+    --text-main: #f5f5f7;
+    --text-muted: #a1a1a6;
+  }
+}
